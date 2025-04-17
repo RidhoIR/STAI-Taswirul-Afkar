@@ -110,12 +110,12 @@ export const column: ColumnDef<Mahasiswa>[] = [
                     {/* <Delete anggaran={anggaran} /> */}
                     {/* <Edit anggaran={anggaran} /> */}
                     <Link href={route("admin.bendahara.riwayat-pembayaran.detail-mahasiswa", { mahasiswa_id: mahasiswa.id } )}>
-                        <Button variant="blue">Pembayaran</Button>
+                        <Button variant="blue">Keuangan</Button>
                     </Link>
 
-                    <Link href={route("admin.bendahara.tanggungan-mahasiswa.index", { id: mahasiswa.id } )}>
+                    {/* <Link href={route("admin.bendahara.tanggungan-mahasiswa.index", { id: mahasiswa.id } )}>
                         <Button variant="blue">Tanggungan</Button>
-                    </Link>
+                    </Link> */}
                 </div>
             )
         },
