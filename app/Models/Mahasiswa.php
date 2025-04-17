@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+
+use Illuminate\Database\Eloquent\Model;
+
+class Mahasiswa extends Authenticatable
+{
+    use HasFactory, Notifiable;
+
+    protected $fillable = [
+        'semester_id',
+        'name',
+        'nim',
+        'prodi',
+        'tahun_masuk',
+        'status',
+        'email',
+        'password'
+    ];
+
+    protected $hidden = ['password'];
+
+    protected static function booted()
+    {
+        static::created(function ($mahasiswa) {
+            $semesters = Semester::all();
+            $jenisPembayarans = JenisPembayaran::all();
+
+            foreach ($semesters as $semester) {
+                foreach ($jenisPembayarans as $jenis) {
+                    TanggunganPembayaran::create([
+                        'mahasiswa_id' => $mahasiswa->id,
+                        'semester_id' => $semester->id,
+                        'jenis_pembayaran_id' => $jenis->id,
+                        'jumlah' => $jenis->jumlah,
+                        'status' => 'belum_bayar',
+                    ]);
+                }
+            }
+        });
+    }
+
+
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class);
+    }
+
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class);
+    }
+
+    public function tanggungan_pembayaran()
+    {
+        return $this->hasMany(TanggunganPembayaran::class);
+    }
+}
