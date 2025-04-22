@@ -19,8 +19,8 @@ class Transaksi extends Model
         'mahasiswa_id',
         'no_invoice',
         'user_id',
-        'jenis_pembayaran_id',
-        'semester_id',
+        'detail_jenis_pembayaran_id',
+        // 'semester_id',
         'deskripsi',
         'jumlah',
         'tanggal_pembayaran'
@@ -40,9 +40,9 @@ class Transaksi extends Model
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
     }
 
-    public function jenis_pembayaran()
+    public function detail_jenis_pembayaran()
     {
-        return $this->belongsTo(JenisPembayaran::class, 'jenis_pembayaran_id');
+        return $this->belongsTo(DetailJenisPembayaran::class);
     }
 
     public function semester()

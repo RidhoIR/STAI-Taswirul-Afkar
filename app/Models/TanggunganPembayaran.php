@@ -11,8 +11,8 @@ class TanggunganPembayaran extends Model
 
     protected $fillable = [
         'mahasiswa_id',
-        'jenis_pembayaran_id',
-        'semester_id',
+        'detail_jenis_pembayaran_id',
+        // 'semester_id',
         'jumlah',
         'status',
     ];
@@ -22,13 +22,13 @@ class TanggunganPembayaran extends Model
         return $this->belongsTo(Mahasiswa::class);
     }
 
-    public function jenis_pembayaran()
+    public function detail_jenis_pembayaran()
     {
-        return $this->belongsTo(JenisPembayaran::class);
+        return $this->belongsTo(DetailJenisPembayaran::class, );
     }
 
-    public function semester()
-    {
-        return $this->belongsTo(Semester::class);
-    }
+    // public function semester()
+    // {
+    //     return $this->belongsTo(Semester::class);
+    // }
 }

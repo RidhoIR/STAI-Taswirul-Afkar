@@ -52,6 +52,7 @@ export interface Transaksi  {
     mahasiswa: Mahasiswa;
     jenis_pembayaran: Jenis_pembayaran; // Ubah jadi jenis_pembayaran
     semester: Semester;
+    detail_jenis_pembayaran: DetailJenisPembayaran;
     deskripsi: string;
     jumlah: number;
     tanggal_pembayaran: Date;
@@ -79,13 +80,13 @@ export interface Anggaran{
 export interface TanggunganPembayaran{
     id: number;
     mahasiswa: Mahasiswa;
-    jenis_pembayaran: Jenis_pembayaran;
+    detail_jenis_pembayaran: DetailJenisPembayaran;
     semester: Semester;
     jumlah: string;
     status:string;
 }
 
-export interface JenisPembayaranSemester{
+export interface DetailJenisPembayaran{
     id: number;
     semester: Semester;
     jenis_pembayaran: Jenis_pembayaran;
@@ -117,5 +118,5 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     mahasiswa:Mahasiswa[];
     transaksi:Transaksi[];
     tanggungan_pembayaran:TanggunganPembayaran[];
-    jenis_pembayaran_semester:JenisPembayaranSemester[];
+    detail_jenis_pembayaran:DetailJenisPembayaran[];
 };

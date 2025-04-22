@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\DetailJenisPembayaran;
 use App\Models\JenisPembayaran;
 use App\Models\Mahasiswa;
 use App\Models\TanggunganPembayaran;
@@ -42,39 +43,45 @@ class TransaksiController extends Controller
                 'jumlah' => 'required|numeric',
                 'deskripsi' => 'nullable|string',
             ]);
-            $userId = Auth::id();
-            $jenisPembayaran = JenisPembayaran::findOrFail($request->jenis_pembayaran_id);
+
+            // Temukan detail jenis pembayaran berdasarkan jenis_pembayaran_id dan semester_id
+            $detailPembayaran = DetailJenisPembayaran::where('jenis_pembayaran_id', $request->jenis_pembayaran_id)
+                ->where('semester_id', $request->semester_id)
+                ->firstOrFail();
+
+            // Ambil data mahasiswa
             $mahasiswa = Mahasiswa::findOrFail($mahasiswa_id);
 
+            // Buat no invoice
             $noInvoice = 'INV-' . Str::upper(Str::random(10));
-            
 
-            $deskripsi = $request->deskripsi ?? "Pembayaran {$jenisPembayaran->nama_pembayaran} oleh {$mahasiswa->nama}";
-
+            // Deskripsi default
+            $deskripsi = $request->deskripsi ?? "Pembayaran  oleh {$mahasiswa->nama}";
 
             // Simpan transaksi
             $transaksi = Transaksi::create([
-                'user_id' => $userId,
+                'user_id' => Auth::id(),
                 'no_invoice' => $noInvoice,
                 'mahasiswa_id' => $mahasiswa_id,
-                'jenis_pembayaran_id' => $request->jenis_pembayaran_id,
-                'semester_id' => $request->semester_id,
+                'detail_jenis_pembayaran_id' => $detailPembayaran->id,
                 'jumlah' => $request->jumlah,
                 'tanggal_pembayaran' => now(),
                 'deskripsi' => $deskripsi,
             ]);
 
-            // Update tanggungan jadi lunas
-            TanggunganPembayaran::where('mahasiswa_id', $request->mahasiswa_id)
-                ->where('jenis_pembayaran_id', $request->jenis_pembayaran_id)
-                ->where('semester_id', $request->semester_id)
+            // Update status tanggungan menjadi lunas
+            TanggunganPembayaran::where('mahasiswa_id', $mahasiswa_id)
+                ->where('detail_jenis_pembayaran_id', $detailPembayaran->id)
                 ->update(['status' => 'lunas']);
+            // dd($detailPembayaran);
 
             return redirect()->back()->with('success', 'Transaksi berhasil disimpan.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', ': ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
+
 
     /**
      * Display the specified resource.

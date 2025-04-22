@@ -22,7 +22,7 @@ class JenisPembayaran extends Model
                 TanggunganPembayaran::create([
                     'mahasiswa_id' => $mahasiswa->id,
                     'semester_id' => $semester->id,
-                    'jenis_pembayaran_id' => $jenis->id,
+                    'detail_jenis_pembayaran_id' => $jenis->id,
                     'jumlah' => $jenis->jumlah,
                     'status' => 'belum_bayar',
                 ]);
@@ -36,13 +36,13 @@ class JenisPembayaran extends Model
         return $this->hasMany(Transaksi::class);
     }
 
-    public function tanggunganPembayaran()
-    {
-        return $this->hasMany(TanggunganPembayaran::class);
-    }
+    // public function tanggungan_pembayaran()
+    // {
+    //     return $this->hasMany(TanggunganPembayaran::class);
+    // }
 
-    public function jenis_pembayaran_semester()
+    public function detail_jenis_pembayaran()
     {
-        return $this->hasMany(JenisPembayaranSemester::class);
+        return $this->hasMany(DetailJenisPembayaran::class);
     }
 }

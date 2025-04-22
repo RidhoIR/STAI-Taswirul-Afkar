@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('no_invoice')->unique(); // Gunakan UUID untuk no_invoice
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('mahasiswa_id')->constrained('mahasiswas')->onDelete('cascade'); // Relasi ke mahasiswa
-            $table->foreignId('jenis_pembayaran_id')->constrained('jenis_pembayarans')->onDelete('cascade'); // Relasi ke jenis pembayaran
-            $table->foreignId('semester_id')->constrained('semesters')->onDelete('cascade'); // Relasi ke semester
+            $table->foreignId('detail_jenis_pembayaran_id')->constrained('detail_jenis_pembayarans')->onDelete('cascade'); // Relasi ke jenis pembayaran
+            // $table->foreignId('semester_id')->constrained('semesters')->onDelete('cascade'); // Relasi ke semester
             $table->string('deskripsi')->nullable();
             $table->decimal('jumlah', 10, 2); // Jumlah yang dibayar
             $table->date('tanggal_pembayaran'); // Tanggal pembayaran

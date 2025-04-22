@@ -31,13 +31,14 @@ class Mahasiswa extends Authenticatable
         static::created(function ($mahasiswa) {
             $semesters = Semester::all();
             $jenisPembayarans = JenisPembayaran::all();
+            $jenis_pembayaran_semester = DetailJenisPembayaran::all();
 
             foreach ($semesters as $semester) {
-                foreach ($jenisPembayarans as $jenis) {
+                foreach ($jenis_pembayaran_semester as $jenis) {
                     TanggunganPembayaran::create([
                         'mahasiswa_id' => $mahasiswa->id,
                         'semester_id' => $semester->id,
-                        'jenis_pembayaran_id' => $jenis->id,
+                        'detail_jenis_pembayaran_id' => $jenis->id,
                         'jumlah' => $jenis->jumlah,
                         'status' => 'belum_bayar',
                     ]);

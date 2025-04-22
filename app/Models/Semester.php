@@ -23,13 +23,13 @@ class Semester extends Model
         return $this->hasMany(Transaksi::class);
     }
 
-    public function tanggunganPembayaran()
-    {
-        return $this->hasMany(TanggunganPembayaran::class);
-    }
+    // public function tanggunganPembayaran()
+    // {
+    //     return $this->hasMany(TanggunganPembayaran::class);
+    // }
 
-    public function jenis_pembayaran_semester()
+    public function detail_jenis_pembayaran()
     {
-        return $this->hasMany(JenisPembayaranSemester::class);
+        return $this->hasMany(DetailJenisPembayaran::class);
     }
 }

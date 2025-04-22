@@ -3,18 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\DetailJenisPembayaran;
 use App\Models\JenisPembayaranSemester;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class JenisPembayaranSemesterController extends Controller
+class DetailJenisPembayaranController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $jenis_pembayaran_semester = JenisPembayaranSemester::with([ 'jenis_pembayaran', 'semester'])
+        $jenis_pembayaran_semester = DetailJenisPembayaran::with([ 'jenis_pembayaran', 'semester'])
             ->orderBy('created_at', 'desc')
             ->get();
 

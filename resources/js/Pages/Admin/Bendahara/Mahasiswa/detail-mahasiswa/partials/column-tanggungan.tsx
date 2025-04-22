@@ -52,27 +52,27 @@ export const columnTanggungan: ColumnDef<TanggunganPembayaran>[] = [
         enableHiding: false,
     },
     {
-        accessorFn: row => row.jenis_pembayaran.nama_pembayaran,
+        accessorFn: row => row.detail_jenis_pembayaran.jenis_pembayaran.nama_pembayaran,
         header: "Jenis Pembayaran",
         cell: ({ row }) => (
-            // console.log(row.original.jenis_pembayaran_id.nama_pembayaran),
-            <div className="uppercase">{row.original.jenis_pembayaran.nama_pembayaran}</div>
+            // console.log(row.original.detail_jenis_pembayaran.jenis_pembayaran.nama_pembayaran),
+            <div className="uppercase">{row.original.detail_jenis_pembayaran.jenis_pembayaran.nama_pembayaran}</div>
         ),
     },
     {
-        accessorFn: row => row.semester.tahun_ajaran + ' ' + row.semester.semester,
+        accessorFn: row => row.detail_jenis_pembayaran.semester.semester + ' ' + row.detail_jenis_pembayaran.semester.tahun_ajaran,
         header: "Semester",
         cell: ({ row }) => (
             // console.log(row.original.jenis_pembayaran_id.nama_pembayaran),
-            <div className="capitalize">{row.original.semester.semester} {row.original.semester.tahun_ajaran}</div>
+            <div className="capitalize">{row.original.detail_jenis_pembayaran.semester.semester} {row.original.detail_jenis_pembayaran.semester.tahun_ajaran}</div>
         ),
     },
     {
-        accessorFn: row => row.jenis_pembayaran.jumlah,
+        accessorFn: row => row.detail_jenis_pembayaran.jumlah,
         header: "Harga",
         cell: ({ row }) => (
             <div className="capitalize text-green-500 font-medium">
-                <FormatRupiah value={Number(row.original.jumlah)} />
+                <FormatRupiah value={Number(row.original.detail_jenis_pembayaran.jumlah)} />
             </div>
         ),
     },

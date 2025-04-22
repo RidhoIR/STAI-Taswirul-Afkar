@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminLpjController;
 use App\Http\Controllers\Admin\AnggaranController as AdminAnggaranController;
+use App\Http\Controllers\Admin\DetailJenisPembayaranController;
 use App\Http\Controllers\Admin\JenisPembayaranController;
 use App\Http\Controllers\Admin\JenisPembayaranSemesterController;
 use App\Http\Controllers\Admin\KeuanganController;
@@ -86,7 +87,7 @@ Route::middleware('auth:web,mahasiswa', 'role:bendahara')->group(function () {
     Route::delete('/jenis-pembayaran/{id}', [JenisPembayaranController::class, 'destroy'])->name('admin.bendahara.jenis-pembayaran.destroy');
     Route::get('/pembayaran/mahasiswa/{id}', [TanggunganPembayaran::class,'tanggunganMahasiswa'])->name('admin.bendahara.tanggungan-mahasiswa.index');
     Route::post('/pembayaran/mahasiswa/{mahasiswa_id}',[TransaksiController::class,'store'])->name('admin.bendahara.transaksi.store');
-    Route::get('/jenis-pembayaran/detail',[JenisPembayaranSemesterController::class,'index'])->name('admin.bendahara.detail-jenis-pembayaran.index');
+    Route::get('/jenis-pembayaran/detail',[DetailJenisPembayaranController::class,'index'])->name('admin.bendahara.detail-jenis-pembayaran.index');
 }); 
 
 

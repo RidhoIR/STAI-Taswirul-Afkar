@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JenisPembayaranSemester extends Model
+class DetailJenisPembayaran extends Model
 {
     use HasFactory;
 
@@ -23,5 +23,15 @@ class JenisPembayaranSemester extends Model
     public function semester()
     {
         return $this->belongsTo(Semester::class);
+    }
+
+    public function tanggungan_pembayaran()
+    {
+        return $this->hasMany(TanggunganPembayaran::class);
+    }
+
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class);
     }
 }

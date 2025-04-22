@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class JenisPembayaranSemesterSeeder extends Seeder
+class DetailJenisPembayaranSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -25,7 +25,7 @@ class JenisPembayaranSemesterSeeder extends Seeder
             ['jenis_pembayaran_id' => 3, 'semester_id' => 2, 'jumlah' => 260000],
         ];
 
-        DB::table('jenis_pembayaran_semesters')->insert($data);
+        DB::table('detail_jenis_pembayarans')->insert($data);
     
     }
 }

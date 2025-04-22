@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\DetailJenisPembayaran;
 use App\Models\Jenis_Pembayaran;
 use App\Models\JenisPembayaran;
 use App\Models\Mahasiswa;
@@ -44,19 +45,21 @@ class KeuanganController extends Controller
     public function detailMahasiswa($mahasiswa_id)
     {
         $mahasiswa = Mahasiswa::findOrFail($mahasiswa_id);
+        $detail_jenis_pembayaran = DetailJenisPembayaran::with('jenis_pembayaran')->get();
 
         $transaksi = $mahasiswa->transaksi()
-            ->with(['jenis_pembayaran', 'semester', 'user']) // load relasi yang dibutuhkan
+            ->with(['detail_jenis_pembayaran.jenis_pembayaran', 'detail_jenis_pembayaran.semester', 'user']) // load relasi yang dibutuhkan
             ->orderBy('created_at', 'desc') // FIFO berdasarkan tanggal_pembayaran
             ->get();
         $tanggungan_pembayaran = $mahasiswa->tanggungan_pembayaran()
-            ->with(['jenis_pembayaran', 'semester', 'mahasiswa']) // load relasi yang dibutuhkan
+            ->with(['detail_jenis_pembayaran.jenis_pembayaran', 'detail_jenis_pembayaran.semester',  'mahasiswa']) // load relasi yang dibutuhkan
             ->orderBy('created_at', 'desc') // FIFO berdasarkan tanggal_pembayaran
             ->get();
         return Inertia::render('Admin/Bendahara/Mahasiswa/detail-mahasiswa/index', [
             'mahasiswa' => $mahasiswa,
             'transaksi' => $transaksi, // ini sudah diurutkan dengan benar
             'tanggungan_pembayaran' => $tanggungan_pembayaran,
+            'detail_jenis_pembayaran' => $detail_jenis_pembayaran,
         ]);
     }
 
@@ -140,20 +143,20 @@ class KeuanganController extends Controller
     {
         $transaksi = Transaksi::firstOrFail();
 
-        $kembali = $transaksi->jumlah - $transaksi->jenis_pembayaran->jumlah;
+        $kembali = $transaksi->jumlah - $transaksi->detail_jenis_pembayaran->jumlah;
 
         $data = [
             'noInvoice' => $transaksi->no_invoice,
             'tanggalPembayaran' => $transaksi->tanggal_pembayaran,
             'nama' => $transaksi->mahasiswa->name,
             'nim' => $transaksi->mahasiswa->nim,
-            'semester' => $transaksi->semester->semester,
-            'tahun' => $transaksi->semester->tahun_ajaran,
+            'semester' => $transaksi->detail_jenis_pembayaran->semester->semester,
+            'tahun' => $transaksi->detail_jenis_pembayaran->semester->tahun_ajaran,
             'admin' => $transaksi->user->name,
-            'jenisPembayaran' => $transaksi->jenis_pembayaran->nama_pembayaran,
+            'jenisPembayaran' => $transaksi->detail_jenis_pembayaran->jenis_pembayaran->nama_pembayaran,
             'jumlah' => $transaksi->jumlah,
             'subtotal' => $transaksi->jumlah,
-            'harga' => $transaksi->jenis_pembayaran->jumlah,
+            'harga' => $transaksi->detail_jenis_pembayaran->jumlah,
             'deskripsi' => $transaksi->deskripsi,
             'kembali' => $kembali
         ];

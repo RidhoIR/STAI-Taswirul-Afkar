@@ -21,7 +21,7 @@ class TanggunganPembayaran extends Controller
     {
         $mahasiswa = Mahasiswa::findOrFail($id);
         $tanggungan_pembayaran = $mahasiswa->tanggungan_pembayaran()
-            ->with(['jenis_pembayaran', 'semester', 'mahasiswa']) // load relasi yang dibutuhkan
+            ->with(['jenis_pembayaran_semester.jenis_pembayaran', 'semester', 'mahasiswa']) // load relasi yang dibutuhkan
             ->orderBy('created_at', 'desc') // FIFO berdasarkan tanggal_pembayaran
             ->get();
         return Inertia::render('Admin/Bendahara/Mahasiswa/detail-mahasiswa/index', [

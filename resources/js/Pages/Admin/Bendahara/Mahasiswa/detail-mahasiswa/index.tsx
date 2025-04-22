@@ -48,14 +48,16 @@ interface TransaksiProps {
     tanggungan_pembayaran: TanggunganPembayaran[];
     transaksi: Transaksi[];
     mahasiswa: Mahasiswa;
+    
 }
 
-const Index = ({ transaksi, mahasiswa, tanggungan_pembayaran }: TransaksiProps) => {
+const Index = ({ transaksi, mahasiswa, tanggungan_pembayaran,}: TransaksiProps) => {
     const { flash } = usePage<PageProps>().props;
     // const { mahasiswa } = usePage<PageProps>().props;
     const { jenis_pembayaran } = usePage<PageProps>().props;
     const {semesters} = usePage<PageProps>().props;
     console.log(flash);
+    
 
 
     // console.log(mahasiswa);

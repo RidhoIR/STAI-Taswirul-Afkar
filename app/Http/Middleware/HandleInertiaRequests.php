@@ -50,7 +50,7 @@ class HandleInertiaRequests extends Middleware
             'transaksi' => fn() => \App\Models\Transaksi::all(),
             'mahasiswa' => fn() => \App\Models\Mahasiswa::all(),
             'tanggungan_pembayaran' => fn() => \App\Models\TanggunganPembayaran::all(),
-            'jenis_pembayaran_semester' => fn() => \App\Models\JenisPembayaranSemester::all(),
+            'detail_jenis_pembayaran' => fn() => \App\Models\DetailJenisPembayaran::all(),
         ];
     }
 }
