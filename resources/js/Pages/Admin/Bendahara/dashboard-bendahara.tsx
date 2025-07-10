@@ -30,7 +30,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/Com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs';
 import { formatRupiah, formatTanggalIndonesia } from '@/lib/utils';
 import { TransactionChart } from '@/Components/transaction-chart'
-import PembayaranPie from '@/Components/pembayaran-pie'
+import PembayaranPie from '@/Components/pembayaran-bar'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { DateRangePicker } from '@/Components/date-range-picker'
 import { endOfMonth, format, startOfMonth, getYear } from 'date-fns'
