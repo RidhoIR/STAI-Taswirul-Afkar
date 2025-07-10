@@ -15,7 +15,7 @@ import SectionTitle from '@/Components/section-title';
 //     DialogTrigger,
 // } from "@/Components/ui/dialog";
 import { Input } from "@/Components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/Components/ui/label";
 import { BsPencilSquare, BsPersonAdd } from "react-icons/bs";
 import {
     Select,
@@ -30,7 +30,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/Components/ui/dialog"
 import { Camera, Eye } from "lucide-react"
 import { Button } from '@/Components/ui/button';
 import { IconPersonAdd } from '@irsyadadl/paranoid';

@@ -14,7 +14,7 @@ import {
     PopoverTrigger,
 } from "@/Components/ui/popover";
 import { Input } from "@/Components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/Components/ui/label";
 import { Anggaran, PageProps } from "@/types";
 import { useForm, usePage } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";

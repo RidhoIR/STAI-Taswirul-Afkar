@@ -10,7 +10,7 @@ import {
     DialogTrigger,
 } from "@/Components/ui/dialog";
 import { Input } from "@/Components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/Components/ui/label";
 import { useForm, usePage } from "@inertiajs/react";
 import { BsPencilSquare } from "react-icons/bs";
 import { Anggaran, PageProps } from '@/types';
@@ -36,7 +36,7 @@ const Edit = ({ anggaran }: EditAnggaranProps) => {
         jumlah_anggaran: string;
         tridharma_id: string;
     }>({
-        tridharma_id: String(anggaran.tridharma_id),
+        tridharma_id: String(anggaran.tridharma),
         perihal: anggaran.perihal,
         anggaran: null,
         jumlah_anggaran: anggaran.jumlah_anggaran,
@@ -57,7 +57,7 @@ const Edit = ({ anggaran }: EditAnggaranProps) => {
 
     useEffect(() => {
         setData({
-            tridharma_id: String(anggaran.tridharma_id),
+            tridharma_id: String(anggaran.tridharma),
             perihal: anggaran.perihal,
             anggaran: null,
             jumlah_anggaran: anggaran.jumlah_anggaran,

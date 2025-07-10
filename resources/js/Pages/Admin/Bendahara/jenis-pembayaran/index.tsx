@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import { column } from './partials/column';
 import { DataTable } from '@/Components/DataTable';
 import { Input } from "@/Components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/Components/ui/label";
 import { Button } from '@/Components/ui/button';
 import { BsFile, BsFileCheckFill, BsPersonAdd } from 'react-icons/bs';
 import { IconFile } from '@irsyadadl/paranoid';
@@ -22,7 +22,7 @@ import {
     PopoverTrigger,
 } from "@/Components/ui/popover"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/Components/ui/dialog'
 import { FormatRupiah } from '@arismun/format-rupiah'
 
 interface AnggaranProps {

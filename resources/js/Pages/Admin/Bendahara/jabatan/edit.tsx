@@ -3,9 +3,9 @@ import { Button } from "@/Components/ui/button";
 import {
     Dialog, DialogContent, DialogDescription,
     DialogFooter, DialogHeader, DialogTitle, DialogTrigger
-} from "@/components/ui/dialog";
+} from "@/Components/ui/dialog";
 import { Input } from "@/Components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/Components/ui/label";
 import { useForm, usePage } from "@inertiajs/react";
 import { BsPencilSquare } from "react-icons/bs";
 import { HonorSkripsi, HonorWisuda, Jabatan, PageProps } from '@/types';

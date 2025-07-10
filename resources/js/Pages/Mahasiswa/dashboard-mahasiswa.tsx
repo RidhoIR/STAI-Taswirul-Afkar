@@ -5,7 +5,7 @@ import { Head, useForm, usePage } from '@inertiajs/react'
 import React, { useState } from 'react'
 import { DataTable } from '@/Components/DataTable';
 import { Input } from "@/Components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/Components/ui/label";
 import { Button } from '@/Components/ui/button';
 import { BsFile, BsFileCheckFill } from 'react-icons/bs';
 import { IconFile } from '@irsyadadl/paranoid';
@@ -18,7 +18,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/Components/ui/dialog";
 
 import { FileText, Download } from 'lucide-react';
 
