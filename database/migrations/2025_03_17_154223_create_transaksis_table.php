@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('mahasiswa_id')->constrained('mahasiswas')->onDelete('cascade'); // Relasi ke mahasiswa
             $table->foreignId('detail_jenis_pembayaran_id')->constrained('detail_jenis_pembayarans')->onDelete('cascade'); // Relasi ke jenis pembayaran
+            $table->foreignId('tanggungan_pembayaran_id')->references('id')->on('tanggungan_pembayarans')->onDelete('cascade');
             // $table->foreignId('semester_id')->constrained('semesters')->onDelete('cascade'); // Relasi ke semester
             $table->string('deskripsi')->nullable();
             $table->decimal('jumlah', 10, 2); // Jumlah yang dibayar

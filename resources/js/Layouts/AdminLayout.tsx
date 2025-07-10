@@ -18,6 +18,8 @@ import { toast } from 'react-toastify';
 import { LogOut, User } from "lucide-react";
 import Toastify from '@/Components/Toastify';
 
+
+
 const AdminLayout = ({ title, children }: { title?: string; children: React.ReactNode }) => {
     const { auth } = usePage<PageProps>().props;
     const { flash } = usePage<PageProps>().props;

@@ -30,29 +30,15 @@ import { get } from "http";
 // Definisikan kolom tabel produk
 export const column: ColumnDef<Transaksi>[] = [
     {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
+        id: "no",
+        header: "No.",
+        cell: ({ row }) => row.index + 1,
         enableSorting: false,
         enableHiding: false,
     },
     {
         accessorKey: "no_invoice",
+        id: "no_invoice",
         header: ({ column }) => {
             return (
                 <Button
@@ -70,7 +56,7 @@ export const column: ColumnDef<Transaksi>[] = [
         header: "Nama",
         accessorFn: row => row.mahasiswa.name,
         cell: ({ row }) => <div className="capitalize">{row.original.mahasiswa.name}</div>
-    },    
+    },
     {
         accessorFn: row => row.mahasiswa.prodi,
         header: "Prodi",
@@ -85,22 +71,29 @@ export const column: ColumnDef<Transaksi>[] = [
             <div className="capitalize">{row.original.mahasiswa.tahun_masuk}</div>
         ),
     },
-    
+
     {
-        accessorFn: row => row.jenis_pembayaran.nama_pembayaran,
-        header: "Pembayaran",
+        accessorFn: row => row.detail_jenis_pembayaran.jenis_pembayaran.nama_pembayaran,
+        header: "Jenis Pembayaran",
         cell: ({ row }) => (
             // console.log(row.original.jenis_pembayaran_id.nama_pembayaran),
-            <div className="uppercase">{row.original.jenis_pembayaran.nama_pembayaran}</div>
+            <div className="uppercase">{row.original.detail_jenis_pembayaran.jenis_pembayaran.nama_pembayaran}</div>
         ),
     },
     {
-        accessorFn: row => row.semester.tahun_ajaran + ' ' + row.semester.semester,
+        accessorFn: row => row.detail_jenis_pembayaran.semester.semester + ' ' + row.detail_jenis_pembayaran.semester.tahun_ajaran,
         header: "Semester",
-        cell: ({ row }) => (
-            // console.log(row.original.jenis_pembayaran_id.nama_pembayaran),
-            <div className="capitalize">{row.original.semester.tahun_ajaran} {row.original.semester.semester}</div>
-        ),
+        cell: ({ row }) => {
+            const semester = row.original.detail_jenis_pembayaran.semester;
+            return (
+                <div className="capitalize">
+                    {semester
+                        ? `${semester.semester} ${semester.tahun_ajaran}`
+                        : <span className="">-</span>
+                    }
+                </div>
+            );
+        },
     },
     {
         accessorKey: "tanggal_pembayaran",

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('jenis_pembayarans', function (Blueprint $table) {
             $table->id();
             $table->string('nama_pembayaran');
-            $table->integer('jumlah');
+            $table->boolean('is_once')->default(false); // false = per semester, true = satu kali
             $table->timestamps();
         });
     }

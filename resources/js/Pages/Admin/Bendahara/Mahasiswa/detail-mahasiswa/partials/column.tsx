@@ -30,24 +30,9 @@ import { get } from "http";
 // Definisikan kolom tabel produk
 export const column: ColumnDef<Transaksi>[] = [
     {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
+        id: "no",
+        header: "No.",
+        cell: ({ row }) => row.index + 1,
         enableSorting: false,
         enableHiding: false,
     },
@@ -77,10 +62,18 @@ export const column: ColumnDef<Transaksi>[] = [
     {
         accessorFn: row => row.detail_jenis_pembayaran.semester.semester + ' ' + row.detail_jenis_pembayaran.semester.tahun_ajaran,
         header: "Semester",
-        cell: ({ row }) => (
-            // console.log(row.original.jenis_pembayaran_id.nama_pembayaran),
-            <div className="capitalize">{row.original.detail_jenis_pembayaran.semester.semester} {row.original.detail_jenis_pembayaran.semester.tahun_ajaran}</div>
-        ),
+        cell: ({ row }) => {
+            const semester = row.original.detail_jenis_pembayaran.semester;
+
+            return (
+                <div className="capitalize">
+                    {semester
+                        ? `${semester.semester} ${semester.tahun_ajaran}`
+                        : <span className="text-red-500">Tidak ada semester</span>
+                    }
+                </div>
+            );
+        },
     },
     {
         accessorFn: row => row.detail_jenis_pembayaran.jenis_pembayaran.jumlah,

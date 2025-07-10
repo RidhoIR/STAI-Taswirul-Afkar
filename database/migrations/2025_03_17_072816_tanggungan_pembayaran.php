@@ -17,10 +17,10 @@ return new class extends Migration
             $table->foreignId('detail_jenis_pembayaran_id')->constrained('detail_jenis_pembayarans')->onDelete('cascade');
             // $table->foreignId('semester_id')->constrained('semesters')->onDelete('cascade');
             $table->integer('jumlah'); // bisa override jumlah default
-            $table->enum('status', ['belum_bayar', 'lunas'])->default('belum_bayar');
+            $table->string('status')->default('belum_bayar');
             $table->timestamps();
 
-            $table->unique(['mahasiswa_id', 'detail_jenis_pembayaran_id'], 'unik_tanggungan'); // satu tanggungan per jenis per semester
+            // $table->unique(['mahasiswa_id', 'detail_jenis_pembayaran_id'], 'unik_tanggungan'); // satu tanggungan per jenis per semester
         });
     }
 

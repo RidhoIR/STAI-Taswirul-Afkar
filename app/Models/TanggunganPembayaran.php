@@ -24,11 +24,21 @@ class TanggunganPembayaran extends Model
 
     public function detail_jenis_pembayaran()
     {
-        return $this->belongsTo(DetailJenisPembayaran::class, );
+        return $this->belongsTo(DetailJenisPembayaran::class,);
     }
 
-    // public function semester()
-    // {
-    //     return $this->belongsTo(Semester::class);
-    // }
+    public function transaksis()
+    {
+        return $this->hasMany(Transaksi::class);
+    }
+
+    public function total_dibayar()
+    {
+        return $this->transaksis()->sum('jumlah');
+    }
+
+    public function sisa_pembayaran()
+    {
+        return $this->jumlah - $this->total_dibayar();
+    }
 }

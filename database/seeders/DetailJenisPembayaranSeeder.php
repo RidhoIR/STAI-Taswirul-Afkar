@@ -23,9 +23,12 @@ class DetailJenisPembayaranSeeder extends Seeder
             ['jenis_pembayaran_id' => 1, 'semester_id' => 2, 'jumlah' => 1550000],
             ['jenis_pembayaran_id' => 2, 'semester_id' => 2, 'jumlah' => 260000],
             ['jenis_pembayaran_id' => 3, 'semester_id' => 2, 'jumlah' => 260000],
+
+            // Pembayaran sekali seumur hidup
+            ['jenis_pembayaran_id' => 10, 'semester_id' => null, 'jumlah' => 300000], // Proposal
+            ['jenis_pembayaran_id' => 11, 'semester_id' => null, 'jumlah' => 500000], // Skripsi
         ];
 
         DB::table('detail_jenis_pembayarans')->insert($data);
-    
     }
 }

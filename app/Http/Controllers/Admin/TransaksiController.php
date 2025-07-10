@@ -38,48 +38,67 @@ class TransaksiController extends Controller
     {
         try {
             $request->validate([
-                'jenis_pembayaran_id' => 'required',
-                'semester_id' => 'required',
-                'jumlah' => 'required|numeric',
+                'jenis_pembayaran_id' => 'required|exists:jenis_pembayarans,id',
+                'semester_id' => 'nullable|exists:semesters,id',
+                'jumlah' => 'required|numeric|min:1',
                 'deskripsi' => 'nullable|string',
             ]);
 
-            // Temukan detail jenis pembayaran berdasarkan jenis_pembayaran_id dan semester_id
+            // Ambil mahasiswa
+            $mahasiswa = Mahasiswa::findOrFail($mahasiswa_id);
+
+            // Cari detail_jenis_pembayaran
             $detailPembayaran = DetailJenisPembayaran::where('jenis_pembayaran_id', $request->jenis_pembayaran_id)
                 ->where('semester_id', $request->semester_id)
                 ->firstOrFail();
 
-            // Ambil data mahasiswa
-            $mahasiswa = Mahasiswa::findOrFail($mahasiswa_id);
+            // Cari atau buat TanggunganPembayaran
+            $tanggungan = TanggunganPembayaran::firstOrCreate(
+                [
+                    'mahasiswa_id' => $mahasiswa_id,
+                    'detail_jenis_pembayaran_id' => $detailPembayaran->id,
+                ],
+                [
+                    'jumlah' => $detailPembayaran->jumlah,
+                    'status' => 'belum_bayar',
+                ]
+            );
 
-            // Buat no invoice
-            $noInvoice = 'INV-' . Str::upper(Str::random(10));
+            // Hitung sisa
+            $sisa = $tanggungan->sisa_pembayaran();
 
-            // Deskripsi default
-            $deskripsi = $request->deskripsi ?? "Pembayaran  oleh {$mahasiswa->nama}";
+            // Validasi apakah jumlah melebihi sisa
+            if ($request->jumlah > $sisa) {
+                return redirect()->back()->with('error', 'Jumlah melebihi sisa tagihan. Sisa: Rp. ' . number_format($sisa, 0, ',', '.'));
+            }
 
-            // Simpan transaksi
-            $transaksi = Transaksi::create([
+            // Buat transaksi
+            Transaksi::create([
                 'user_id' => Auth::id(),
-                'no_invoice' => $noInvoice,
+                'no_invoice' => 'INV-' . Str::upper(Str::random(10)),
                 'mahasiswa_id' => $mahasiswa_id,
                 'detail_jenis_pembayaran_id' => $detailPembayaran->id,
+                'tanggungan_pembayaran_id' => $tanggungan->id,
                 'jumlah' => $request->jumlah,
                 'tanggal_pembayaran' => now(),
-                'deskripsi' => $deskripsi,
+                'deskripsi' => $request->deskripsi ?? "Pembayaran oleh {$mahasiswa->nama}",
             ]);
 
-            // Update status tanggungan menjadi lunas
-            TanggunganPembayaran::where('mahasiswa_id', $mahasiswa_id)
-                ->where('detail_jenis_pembayaran_id', $detailPembayaran->id)
-                ->update(['status' => 'lunas']);
-            // dd($detailPembayaran);
+            // Perbarui status jika lunas
+            if ($tanggungan->sisa_pembayaran() <= 0) {
+                $tanggungan->update(['status' => 'lunas']);
+            } elseif ($tanggungan->sisa_pembayaran() > 0 && $tanggungan->total_dibayar() > 0) {
+                $tanggungan->update(['status' => 'belum_lunas']);
+            } else {
+                $tanggungan->update(['status' => 'belum_bayar']);
+            }
 
             return redirect()->back()->with('success', 'Transaksi berhasil disimpan.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
 
 
 

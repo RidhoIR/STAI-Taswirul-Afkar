@@ -113,7 +113,7 @@
                 <strong>{{ $nama }}</strong>
             </td>
             <td>
-                <strong>{{ $admin }}</strong>
+                <strong>Bagian Keuangan</strong>
             </td>
         </tr>
         <tr>
@@ -121,16 +121,16 @@
                 NIM: {{ $nim }}
             </td>
             <td>
-                Jenis Pembayaran: <span style="text-transform: uppercase">{{ $jenisPembayaran }}</span>
+                Jenis Pembayaran: <strong><span style="text-transform: uppercase;">{{ $jenisPembayaran }}</span></strong>
             </td>
         </tr>
         <tr>
             <td>
                 Semester: {{ $tahun }} {{ $semester }}
             </td>
-            <td>
+            {{-- <td>
                 Status: <span style="color: green; font-weight: bold">LUNAS</span>
-            </td>
+            </td> --}}
         </tr>
     </table>
 
@@ -154,27 +154,32 @@
     </table>
 
 
-    <table class="total-box" style=" width: 50%; margin-left: auto;">
+    <table class="total-box" style=" width: 60%; margin-left: auto;">
         <tr>
             <td class="right" colspan="4">Subtotal</td>
-            <td class="right">: Rp {{ number_format($harga, 0, ',', '.') }}</td>
+            <td>:</td>
+            <td style="text-align: right" class="right"> Rp {{ number_format($harga, 0, ',', '.') }}</td>
         </tr>
         <tr>
             <td class="right" colspan="4">Jumlah Pembayaran</td>
-            <td class="right">: Rp {{ number_format($jumlah, 0, ',', '.') }}</td>
+            <td>:</td>
+
+            <td style="text-align: right" class="right"> Rp {{ number_format($jumlah, 0, ',', '.') }}</td>
         </tr>
         <tr>
-            <td colspan="5" style="border-bottom: 1px solid #0d47a1; padding:0"></td>
+            <td colspan="6" style="border-bottom: 1px solid #0d47a1; padding:0"></td>
         </tr>
         <tr>
-            <td class="right" colspan="4"><strong>TOTAL</strong></td>
-            <td class="right"><strong style="color: #0d47a1;">: Rp
+            <td class="right" colspan="4"><strong>TOTAL Dibayar</strong></td>
+            <td>:</td>
+            <td style="text-align: right" class="right"><strong style="color: #0d47a1;">: Rp
                     {{ number_format($harga, 0, ',', '.') }}</strong>
             </td>
         </tr>
-        <tr style="border: 1px solid #0d47a1">
+        <tr >
             <td class="right" colspan="4">Kembali</td>
-            <td class="right">: Rp {{ number_format($kembali, 0, ',', '.') }}</td>
+            <td>:</td>
+            <td style="text-align: right" class="right"> Rp {{ number_format($kembali, 0, ',', '.') }}</td>
         </tr>
     </table>
 
@@ -182,11 +187,9 @@
     <table class="signature">
         <tr>
             <td>Tanda tangan penerima:</td>
-            <td>Tanda tangan pembayar:</td>
         </tr>
         <tr>
-            <td><br><br><strong>{{ $admin }}</strong></td>
-            <td><br><br><strong>{{ $nama }}</strong></td>
+            <td><br><br><strong>Bagian Keuangan</strong></td>
         </tr>
     </table>
 

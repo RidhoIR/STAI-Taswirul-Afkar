@@ -23,10 +23,30 @@ class Semester extends Model
         return $this->hasMany(Transaksi::class);
     }
 
-    // public function tanggunganPembayaran()
-    // {
-    //     return $this->hasMany(TanggunganPembayaran::class);
-    // }
+    public function honor_ujian()
+    {
+        return $this->hasMany(HonorUjian::class);
+    }
+
+    public function honor_skripsi()
+    {
+        return $this->hasMany(HonorSkripsi::class);
+    }
+
+    public function honor_proposal()
+    {
+        return $this->hasMany(HonorProposal::class);
+    }
+
+    public function honor_ppl()
+    {
+        return $this->hasMany(HonorPPL::class);
+    }
+
+    public function honor_wisuda()
+    {
+        return $this->hasMany(HonorWisuda::class);
+    }
 
     public function detail_jenis_pembayaran()
     {

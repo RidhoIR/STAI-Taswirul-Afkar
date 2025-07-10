@@ -47,6 +47,8 @@ const index = ({ mahasiswas }: MahasiswaProps) => {
         email: '',
         nim: '',
         tahun_masuk: '',
+        no_telp: '',
+        jenis_mahasiswa: '',
         password: '',
         password_confirmation: '',
     });
@@ -67,7 +69,7 @@ const index = ({ mahasiswas }: MahasiswaProps) => {
                                 <BsPersonAdd size={20} className='mr-2' /> Tambah Data
                             </Button>
                         </DialogTrigger>
-                        <DialogContent>
+                        <DialogContent className='max-h-[90vh] overflow-y-auto'>
                             <DialogHeader>
                                 <DialogTitle>Edit User</DialogTitle>
                                 <DialogDescription>
@@ -77,7 +79,7 @@ const index = ({ mahasiswas }: MahasiswaProps) => {
                             <form onSubmit={submit}>
                                 <div className="space-y-4">
                                     <div>
-                                        <Label htmlFor="nim">NIM</Label>
+                                        <Label htmlFor="nim">NIM<span className='text-red-600'>*</span></Label>
                                         <Input
                                             id="nim"
                                             value={data.nim}
@@ -86,13 +88,29 @@ const index = ({ mahasiswas }: MahasiswaProps) => {
                                         {errors.nim && <p className="text-red-600">{errors.nim}</p>}
                                     </div>
                                     <div>
-                                        <Label htmlFor="name">Name</Label>
+                                        <Label htmlFor="name">Nama<span className='text-red-600'>*</span></Label>
                                         <Input
                                             id="name"
                                             value={data.name}
                                             onChange={e => setData('name', e.target.value)}
                                         />
                                         {errors.name && <p className="text-red-600">{errors.name}</p>}
+                                    </div>
+                                    <div>
+                                        <Label htmlFor="jenis_mahasiswa">Jenis Mahasiswa</Label>
+                                        <Select
+                                            value={data.jenis_mahasiswa}
+                                            onValueChange={(value) => setData('jenis_mahasiswa', value)}
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Pilih Jenis Mahasiswa" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="reguler">Reguler</SelectItem>
+                                                <SelectItem value="beasiswa">Beasiswa</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        {errors.jenis_mahasiswa && <p className="text-red-600">{errors.jenis_mahasiswa}</p>}
                                     </div>
                                     <div>
                                         <Label htmlFor="email">Email</Label>
@@ -105,7 +123,17 @@ const index = ({ mahasiswas }: MahasiswaProps) => {
                                         {errors.email && <p className="text-red-600">{errors.email}</p>}
                                     </div>
                                     <div>
-                                        <Label htmlFor="tahun_masuk">Tahun Masuk</Label>
+                                        <Label htmlFor="no_telp">No. Telepon</Label>
+                                        <Input
+                                            id="no_telp"
+                                            type="text"
+                                            value={data.no_telp}
+                                            onChange={e => setData('no_telp', e.target.value)}
+                                        />
+                                        {errors.no_telp && <p className="text-red-600">{errors.no_telp}</p>}
+                                    </div>
+                                    <div>
+                                        <Label htmlFor="tahun_masuk">Tahun Masuk<span className='text-red-600'>*</span></Label>
                                         <Input
                                             id="tahun_masuk"
                                             type="text"
@@ -115,12 +143,12 @@ const index = ({ mahasiswas }: MahasiswaProps) => {
                                         {errors.tahun_masuk && <p className="text-red-600">{errors.tahun_masuk}</p>}
                                     </div>
                                     <div>
-                                        <Label htmlFor="password">Password</Label>
+                                        <Label htmlFor="password">Password<span className='text-red-600'>*</span></Label>
                                         <Input id="password" type="password" value={data.password} onChange={e => setData('password', e.target.value)} />
                                         {errors.password && <span className='text-red-600'>{errors.password}</span>}
                                     </div>
                                     <div>
-                                        <Label htmlFor="password_confirmation">Confirm Password</Label>
+                                        <Label htmlFor="password_confirmation">Confirm Password<span className='text-red-600'>*</span></Label>
                                         <Input id="password_confirmation" type="password" value={data.password_confirmation} onChange={e => setData('password_confirmation', e.target.value)} />
                                         {errors.password_confirmation && <span>{errors.password_confirmation}</span>}
                                     </div>

@@ -45,6 +45,7 @@ const Index = ({ jenis_pembayaran }: JenisPembayaranProps) => {
     const { data, setData, post, errors, processing } = useForm({
         nama_pembayaran: '',
         jumlah: '',
+        is_once: false,
     });
 
     const formatRupiah = (value: string) => {
@@ -69,8 +70,15 @@ const Index = ({ jenis_pembayaran }: JenisPembayaranProps) => {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        setOpen(false);
-        post(route('admin.bendahara.jenis-pembayaran.store'));
+        post(route('admin.bendahara.jenis-pembayaran.store'),{
+            onSuccess: () => {
+                setOpen(false);
+                console.log("Pembayaran berhasil");
+            },
+            onError: (errors) => {
+                console.log(errors);
+            }
+        });
     };
 
 
@@ -105,13 +113,14 @@ const Index = ({ jenis_pembayaran }: JenisPembayaranProps) => {
                                         {errors.nama_pembayaran && <p className="text-red-600">{errors.nama_pembayaran}</p>}
                                     </div>
                                     <div>
-                                        <Label htmlFor="jumlah">Jumlah</Label>
-                                        <Input
-                                            id="jumlah"
-                                            value={formatRupiah(data.jumlah)}
-                                            onChange={handleJumlahChange}
+                                        <Label htmlFor="is_once">Hanya Sekali Bayar?</Label>
+                                        <input
+                                            id="is_once"
+                                            type="checkbox"
+                                            checked={data.is_once}
+                                            onChange={e => setData('is_once', e.target.checked)}
+                                            className="ml-2"
                                         />
-                                        {errors.jumlah && <p className="text-red-600">{errors.jumlah}</p>}
                                     </div>
                                     <DialogFooter>
                                         <Button type="submit" disabled={processing}>

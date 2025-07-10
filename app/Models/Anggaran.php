@@ -30,10 +30,14 @@ class Anggaran extends Model
     }
 
     public function tridharma(){
-        return $this->belongsTo(Tridharma::class, 'id_tridharma');
+        return $this->belongsTo(Tridharma::class);
     }
 
     public function lpjs(){
         return $this->hasMany(Lpj::class);
+    }
+
+    public function detail_laporan_pengeluarans(){
+        return $this->hasMany(DetailLaporanPengeluaran::class);
     }
 }

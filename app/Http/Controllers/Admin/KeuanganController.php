@@ -32,7 +32,7 @@ class KeuanganController extends Controller
     public function riwayatPembayaran()
     {
         // Ambil semua mahasiswa
-        $transaksi = Transaksi::with(['mahasiswa', 'jenis_pembayaran', 'semester'])
+        $transaksi = Transaksi::with(['mahasiswa', 'detail_jenis_pembayaran.jenis_pembayaran', 'detail_jenis_pembayaran.semester'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -48,20 +48,39 @@ class KeuanganController extends Controller
         $detail_jenis_pembayaran = DetailJenisPembayaran::with('jenis_pembayaran')->get();
 
         $transaksi = $mahasiswa->transaksi()
-            ->with(['detail_jenis_pembayaran.jenis_pembayaran', 'detail_jenis_pembayaran.semester', 'user']) // load relasi yang dibutuhkan
-            ->orderBy('created_at', 'desc') // FIFO berdasarkan tanggal_pembayaran
+            ->with(['detail_jenis_pembayaran.jenis_pembayaran', 'detail_jenis_pembayaran.semester', 'user'])
+            ->orderBy('created_at', 'desc')
             ->get();
+
         $tanggungan_pembayaran = $mahasiswa->tanggungan_pembayaran()
-            ->with(['detail_jenis_pembayaran.jenis_pembayaran', 'detail_jenis_pembayaran.semester',  'mahasiswa']) // load relasi yang dibutuhkan
-            ->orderBy('created_at', 'desc') // FIFO berdasarkan tanggal_pembayaran
-            ->get();
+            ->with([
+                'detail_jenis_pembayaran.jenis_pembayaran',
+                'detail_jenis_pembayaran.semester',
+                'transaksis', // ini penting agar sisa_pembayaran bisa dihitung tanpa query tambahan
+            ])
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($tanggungan) {
+                return [
+                    'id' => $tanggungan->id,
+                    'jumlah' => $tanggungan->jumlah,
+                    'status' => $tanggungan->status,
+                    'mahasiswa' => $tanggungan->mahasiswa,
+                    'detail_jenis_pembayaran' => $tanggungan->detail_jenis_pembayaran,
+                    'transaksis' => $tanggungan->transaksis,
+                    'total_dibayar' => $tanggungan->total_dibayar(),
+                    'sisa_pembayaran' => $tanggungan->sisa_pembayaran(),
+                ];
+            });
+
         return Inertia::render('Admin/Bendahara/Mahasiswa/detail-mahasiswa/index', [
             'mahasiswa' => $mahasiswa,
-            'transaksi' => $transaksi, // ini sudah diurutkan dengan benar
+            'transaksi' => $transaksi,
             'tanggungan_pembayaran' => $tanggungan_pembayaran,
             'detail_jenis_pembayaran' => $detail_jenis_pembayaran,
         ]);
     }
+
 
 
     // **2. Menampilkan Pembayaran yang Belum Dibayar per Semester**
@@ -141,7 +160,7 @@ class KeuanganController extends Controller
 
     public function printPdf($id)
     {
-        $transaksi = Transaksi::firstOrFail();
+        $transaksi = Transaksi::find($id);
 
         $kembali = $transaksi->jumlah - $transaksi->detail_jenis_pembayaran->jumlah;
 
@@ -150,17 +169,16 @@ class KeuanganController extends Controller
             'tanggalPembayaran' => $transaksi->tanggal_pembayaran,
             'nama' => $transaksi->mahasiswa->name,
             'nim' => $transaksi->mahasiswa->nim,
-            'semester' => $transaksi->detail_jenis_pembayaran->semester->semester,
-            'tahun' => $transaksi->detail_jenis_pembayaran->semester->tahun_ajaran,
+            'semester' => optional($transaksi->detail_jenis_pembayaran->semester)->semester ?? '-',
+            'tahun' => optional($transaksi->detail_jenis_pembayaran->semester)->tahun_ajaran ?? ' ', // Menggunakan detail_jenis_pembayaran->semester->tahun_ajaran jika ada, jika tidak ada, gunakan '-$transaksi->detail_jenis_pembayaran->semester->tahun_ajaran,
             'admin' => $transaksi->user->name,
             'jenisPembayaran' => $transaksi->detail_jenis_pembayaran->jenis_pembayaran->nama_pembayaran,
             'jumlah' => $transaksi->jumlah,
             'subtotal' => $transaksi->jumlah,
             'harga' => $transaksi->detail_jenis_pembayaran->jumlah,
             'deskripsi' => $transaksi->deskripsi,
-            'kembali' => $kembali
+            'kembali' => $kembali,
         ];
-
         $pdf = Pdf::loadView('transaksi', $data)->setPaper('a5', 'portrait');
         return $pdf->stream('transaksi_' . $transaksi->id . '.pdf');
     }

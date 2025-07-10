@@ -20,6 +20,7 @@ class Transaksi extends Model
         'no_invoice',
         'user_id',
         'detail_jenis_pembayaran_id',
+        'tanggungan_pembayaran_id',
         // 'semester_id',
         'deskripsi',
         'jumlah',
@@ -45,13 +46,19 @@ class Transaksi extends Model
         return $this->belongsTo(DetailJenisPembayaran::class);
     }
 
-    public function semester()
-    {
-        return $this->belongsTo(Semester::class);
-    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function detail_laporan_pemasukans()
+    {
+        return $this->hasMany(DetailLaporanPemasukan::class);
+    }
+
+    public function tanggungan_pembayaran()
+    {
+        return $this->belongsTo(TanggunganPembayaran::class);
     }
 }

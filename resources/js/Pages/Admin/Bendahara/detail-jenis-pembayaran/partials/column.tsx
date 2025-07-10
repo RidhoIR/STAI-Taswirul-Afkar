@@ -1,7 +1,7 @@
 // src/Components/columns.ts
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Anggaran, Jenis_pembayaran, JenisPembayaranSemester, Mahasiswa, User } from "@/types"; // Sesuaikan dengan tipe data Anda
+import { Anggaran, Jenis_pembayaran, DetailJenisPembayaran, Mahasiswa, User } from "@/types"; // Sesuaikan dengan tipe data Anda
 // import Delete from "./Delete";
 // import Edit from "./Edit";
 import { Button } from "@/Components/ui/button"
@@ -16,6 +16,8 @@ import { faDownload, faFileDownload, faThumbsUp } from '@fortawesome/free-solid-
 import { FormatRupiah } from "@arismun/format-rupiah";
 import { Link } from "@inertiajs/react";
 import { Row } from "react-day-picker";
+import Edit from "../edit";
+import Delete from "../delete";
 // import Edit from "../edit";
 // import Delete from "../delete";
 // import Update from "../update";
@@ -27,47 +29,36 @@ import { Row } from "react-day-picker";
 
 
 // Definisikan kolom tabel produk
-export const column: ColumnDef<JenisPembayaranSemester>[] = [
+export const column: ColumnDef<DetailJenisPembayaran>[] = [
     {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
+        id: "no",
+        header: "No.",
+        cell: ({ row }) => row.index + 1,
         enableSorting: false,
         enableHiding: false,
     },
     {
-        accessorKey: "nama_pembayaran",
-        header: ({ column }) => {
-            
-            return (
-                <Button
-                    variant="default"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Nama Pembayaran
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => <div className="uppercase">{row.original.jenis_pembayaran.nama_pembayaran}</div>,
+        accessorFn: row => row.jenis_pembayaran.nama_pembayaran,
+        id: 'nama_pembayaran',
+        header: ({ column }) => (
+            <Button
+                variant="default"
+                onClick={() =>
+                    column.toggleSorting(column.getIsSorted() === 'asc')
+                }
+            >
+                Nama Pembayaran
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
+        cell: ({ row }) => (
+            <div className="uppercase">
+                {row.original.jenis_pembayaran.nama_pembayaran}
+            </div>
+        ),
     },
     {
-        accessorKey: "jumlah",
+        accessorKey: "semester",
         header: ({ column }) => {
             return (
                 <Button
@@ -80,7 +71,7 @@ export const column: ColumnDef<JenisPembayaranSemester>[] = [
             )
         },
         cell: ({ row }) => <div className="capitalize">
-            {row.original.semester.semester} {row.original.semester.tahun_ajaran}
+            {row.original.semester ? `${row.original.semester.semester} ${row.original.semester.tahun_ajaran}` : <span className="text-red-500">Tidak ada semester</span>}
         </div>
     },
     {
@@ -104,11 +95,13 @@ export const column: ColumnDef<JenisPembayaranSemester>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const jenis_pembayaran = row.original
+            const detail_jenis_pembayaran = row.original
 
             return (
 
                 <div className="flex gap-2">
+                    <Edit detail_jenis_pembayaran={detail_jenis_pembayaran} />
+                    <Delete detail_jenis_pembayaran={detail_jenis_pembayaran} />
                     {/* <Delete jenis_pembayaran={jenis_pembayaran} />
                     <Edit jenis_pembayaran={jenis_pembayaran} /> */}
                     {/* <Link href={route("admin.bendahara.riwayat-pembayaran.detail-mahasiswa", { mahasiswa_id: mahasiswa.id })}>

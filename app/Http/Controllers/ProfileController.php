@@ -20,6 +20,10 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         return Inertia::render('Profile/Edit', [
+            'auth' => [
+                'user' => Auth::guard('web')->user(),
+                'mahasiswa' => Auth::guard('mahasiswa')->user(),
+            ],
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
         ]);
@@ -33,31 +37,31 @@ class ProfileController extends Controller
         try {
             $user = $request->user();
 
-        // Mengisi semua data yang telah divalidasi
-        $user->fill($request->validated());
+            // Mengisi semua data yang telah divalidasi
+            $user->fill($request->validated());
 
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-
-        if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
-            if ($user->foto) {
-                Storage::disk('public')->delete($user->foto);
+            if ($user->isDirty('email')) {
+                $user->email_verified_at = null;
             }
 
-            // Simpan foto baru
-            $fotoPath = $request->file('foto')->store('profile_photos', 'public');
-            $user->foto = $fotoPath;
-        }
 
-        $user->save();
+            if ($request->hasFile('foto')) {
+                // Hapus foto lama jika ada
+                if ($user->foto) {
+                    Storage::disk('public')->delete($user->foto);
+                }
 
-        // dd($request->all());
+                // Simpan foto baru
+                $fotoPath = $request->file('foto')->store('profile_photos', 'public');
+                $user->foto = $fotoPath;
+            }
+
+            $user->save();
+
+            // dd($request->all());
 
 
-        return Redirect::route('profile.edit')->with('success', 'Berhasil Disimpan');
+            return Redirect::route('profile.edit')->with('success', 'Berhasil Disimpan');
         } catch (\Exception $e) {
             return Redirect::back()->withErrors(['error' => $e->getMessage()]);
         }

@@ -76,8 +76,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             navMain = [
                 {
                     title: "Dashboard",
-                    url: route("dashboard"),
-                    isActive: route().current("dashboard"),
+                    url: route("admin.dashboard"),
+                    isActive: route().current("admin.dashboard"),
                     icon: SquareTerminal,
                 },
                 {
@@ -99,14 +99,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     isActive: route().current("admin.user.index"),
                     icon: Bot,
                 },
+                {
+                    title: "Mahasiswa",
+                    url: route("pengurus.mahasiswa.index"),
+                    isActive: route().current("pengurus.mahasiswa.index"),
+                    icon: Command,
+                },
             ];
         } else if (auth.user.role === "bendahara") {
             navMain = [
                 {
                     title: "Dashboard",
-                    url: route("dashboard"),
-                    isActive: route().current("dashboard"),
+                    url: route("bendahara.dashboard"),
+                    isActive: route().current("bendahara.dashboard"),
                     icon: SquareTerminal,
+                },
+                {
+                    title: "Semester",
+                    url: route("admin.bendahara.semester.index"),
+                    icon: Annoyed,
+                    isActive: route().current("admin.bendahara.semester.index"),
                 },
                 {
                     title: "Riwayat Pembayaran",
@@ -132,13 +144,91 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     icon: Annoyed,
                     isActive: route().current("admin.bendahara.detail-jenis-pembayaran.index"),
                 },
+                {
+                    title: "Honor Jabatan",
+                    url: route("admin.bendahara.honor-jabatan.index"),
+                    icon: Annoyed,
+                    isActive: route().current("admin.bendahara.honor-jabatan.*"),
+                },
+                {
+                    title: "Honor Dosen & Pegawai",
+                    url: route("admin.bendahara.honorarium.index"),
+                    icon: Annoyed,
+                    isActive: route().current("admin.bendahara.honorarium.*"),
+                },
+                {
+                    title: "Honorarium Skripsi",
+                    url: route("admin.bendahara.honor-skripsi.index"),
+                    icon: Annoyed,
+                    isActive: route().current("admin.bendahara.honor-skripsi.*"),
+                },
+                {
+                    title: "Honorarium Proposal",
+                    url: route("admin.bendahara.honor-proposal.index"),
+                    icon: Annoyed,
+                    isActive: route().current("admin.bendahara.honor-proposal.*"),
+                },
+                {
+                    title: "Honorarium Ujian",
+                    url: '#',
+                    icon: Annoyed,
+                    isActive: route().current("admin.bendahara.honor-ujian.*"),
+                    items: [
+                        {
+                            title: "UTS",
+                            url: route("admin.bendahara.honor-ujian.uts.index"),
+                            isActive: route().current("admin.bendahara.honor-ujian.uts.*"),
+                        },
+                        {
+                            title: "UAS",
+                            url: route("admin.bendahara.honor-ujian.uas.index"),
+                            isActive: route().current("admin.bendahara.honor-ujian.uas.*"),
+                        }
+                    ]
+                },
+                {
+                    title: "Honorarium PPL/KKN",
+                    url: route("admin.bendahara.honor-ppl.index"),
+                    icon: Annoyed,
+                    isActive: route().current("admin.bendahara.honor-ppl.*"),
+                },
+                {
+                    title: "Honorarium Wisuda",
+                    url: route("admin.bendahara.honor-wisuda.index"),
+                    icon: Annoyed,
+                    isActive: route().current("admin.bendahara.honor-wisuda.*"),
+                },
+                {
+                    title: "Transaksi Harian",
+                    url: "#",
+                    icon: Annoyed,
+                    isActive: route().current("admin.bendahara.transaksi-harian.*"),
+                    items: [
+                        {
+                            title: "Pengeluaran",
+                            url: route("admin.bendahara.transaksi-harian.pengeluaran.index"),
+                            isActive: route().current("admin.bendahara.transaksi-harian.pengeluaran.*"),
+                        },
+                        {
+                            title: "Pemasukan",
+                            url: route("admin.bendahara.transaksi-harian.pemasukan.index"),
+                            isActive: route().current("admin.bendahara.transaksi-harian.pemasukan.*"),
+                        },
+                    ]
+                },
+                {
+                    title: "Laporan Keuangan",
+                    url: route("admin.bendahara.laporan.index"),
+                    icon: Annoyed,
+                    isActive: route().current("admin.bendahara.laporan.index"),
+                },
             ];
         } else if (auth.user.role === "pengurus") {
             navMain = [
                 {
                     title: "Dashboard",
-                    url: route("dashboard"),
-                    isActive: route().current("dashboard"),
+                    url: route("dashboard.dosen"),
+                    isActive: route().current("dashboard.dosen"),
                     icon: SquareTerminal,
                 },
                 {
@@ -154,12 +244,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     isActive: route().current("pengurus.lpj.index"),
                     icon: FileText,
                 },
-                {
-                    title: "Mahasiswa",
-                    url: route("pengurus.mahasiswa.index"),
-                    isActive: route().current("pengurus.mahasiswa.index"),
-                    icon: Command,
-                },
             ];
         }
     }
@@ -168,9 +252,33 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         navMain = [
             {
                 title: "Dashboard",
-                url: route("dashboard"),
-                isActive: route().current("dashboard"),
+                url: route("mahasiswa.dashboard"),
+                isActive: route().current("mahasiswa.dashboard"),
                 icon: SquareTerminal,
+            },
+            {
+                title: "Profile",
+                url: route("mahasiswa.profile.index"),
+                isActive: route().current("mahasiswa.profile.index"),
+                icon: SquareTerminal,
+            },
+            {
+                title: "Transaksi",
+                url: route("mahasiswa.transaksi.index"),
+                isActive: route().current("mahasiswa.transaksi.index"),
+                icon: SquareTerminal,
+            },
+            {
+                title: "Tanggungan Pembayaran",
+                url: route("mahasiswa.tanggungan-pembayaran.index"),
+                isActive: route().current("mahasiswa.tanggungan-pembayaran.index"),
+                icon: FileText,
+            },
+            {
+                title: "Kartu Ujian",
+                url: route("mahasiswa.kartu-ujian.index"),
+                isActive: route().current("mahasiswa.kartu-ujian.index"),
+                icon: FileText,
             },
         ];
     }

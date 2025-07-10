@@ -36,18 +36,16 @@ class JenisPembayaranController extends Controller
         try {
             $validated = $request->validate([
                 'nama_pembayaran' => 'required|string|max:255',
-                'jumlah' => 'required|string',
+                'is_once' => 'nullable|boolean',
             ]);
-
-            $jumlah = preg_replace('/[^0-9]/', '', $validated['jumlah']);
-
 
             JenisPembayaran::create([
                 'nama_pembayaran' => $validated['nama_pembayaran'],
-                'jumlah' => $jumlah,
+                'is_once' => $validated['is_once'] ?? false,
             ]);
 
-            return redirect()->route('admin.bendahara.jenis-pembayaran.index')->with('success', 'Jenis pembayaran berhasil ditambahkan.');
+            return redirect()->route('admin.bendahara.jenis-pembayaran.index')
+                ->with('success', 'Jenis pembayaran berhasil ditambahkan.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', ': ' . $e->getMessage());
         }
@@ -56,18 +54,15 @@ class JenisPembayaranController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $request->validate([
+            $validated = $request->validate([
                 'nama_pembayaran' => 'required|string|max:255',
-                'jumlah' => 'required|string',
+                'is_once' => 'nullable|boolean',
             ]);
-
-            // Hilangkan "Rp." dan titik dari input jumlah sebelum disimpan sebagai angka
-            $cleanedJumlah = str_replace(['Rp. ', '.'], '', $request->jumlah);
 
             $jenisPembayaran = JenisPembayaran::findOrFail($id);
             $jenisPembayaran->update([
-                'nama_pembayaran' => $request->nama_pembayaran,
-                'jumlah' => $cleanedJumlah,
+                'nama_pembayaran' => $validated['nama_pembayaran'],
+                'is_once' => $validated['is_once'] ?? false,
             ]);
 
             return redirect()->back()->with('success', 'Data berhasil diperbarui.');
@@ -75,6 +70,7 @@ class JenisPembayaranController extends Controller
             return redirect()->back()->with('error', ': ' . $e->getMessage());
         }
     }
+
 
     public function destroy($id)
     {

@@ -13,8 +13,13 @@ class MahasiswaAuthController extends Controller
 {
     public function showLogin()
     {
+        if (Auth::guard('mahasiswa')->check()) {
+            return redirect()->route('mahasiswa.dashboard');
+        }
+
         return Inertia::render('Auth/MahasiswaLogin');
     }
+
 
     public function login(Request $request)
     {
@@ -28,7 +33,7 @@ class MahasiswaAuthController extends Controller
 
         // Coba login dengan guard 'mahasiswa'
         if (Auth::guard('mahasiswa')->attempt([$fieldType => $credentials['login'], 'password' => $credentials['password']])) {
-            return redirect()->route('dashboard');
+            return redirect()->route('mahasiswa.dashboard');
         }
 
         return back()->withErrors(['login' => 'NIM/Email atau password salah']);

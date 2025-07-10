@@ -33,7 +33,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent } from '@/Components/ui/card'
 import ComboboxMahasiswa from './partials/combobox'
 import { faListSquares } from '@fortawesome/free-solid-svg-icons'
-import ComboboxInput from '@/Components/ComboBoxInput'
+import ComboboxInput from '@/Components/ComboboxInput'
+import { DialogDescription } from '@radix-ui/react-dialog'
+import { CommandCombobox } from '@/Components/CommandCombobox'
 
 interface AnggaranProps {
     anggarans: Anggaran[];
@@ -45,9 +47,10 @@ interface AnggaranProps {
 
 interface TransaksiProps {
     transaksi: Transaksi[];
+   
 }
 
-const Index = ({ transaksi }: TransaksiProps) => {
+const Index = ({ transaksi, }: TransaksiProps) => {
     const [open, setOpen] = useState(false);
     const [date, setDate] = React.useState<Date>()
     const { jenis_pembayaran } = usePage<PageProps>().props;
@@ -66,7 +69,7 @@ const Index = ({ transaksi }: TransaksiProps) => {
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        post(route('admin.bendahara.transaksi.store'), {
+        post(route('admin.bendahara.transaksi.store', data.mahasiswa_id), {
             onSuccess: () => {
                 setOpen(false);
                 console.log("Pembayaran berhasil");
@@ -76,6 +79,11 @@ const Index = ({ transaksi }: TransaksiProps) => {
             }
         });
     };
+
+    const optionsMahasiswa = (mahasiswa ?? []).map((mhs: Mahasiswa) => ({
+        label: mhs.name,
+        value: mhs.id.toString(),
+    }));
 
     const formatRupiah = (value: string) => {
         const numberString = value.replace(/[^,\d]/g, '').toString(); // Hapus semua karakter non-digit
@@ -117,19 +125,18 @@ const Index = ({ transaksi }: TransaksiProps) => {
                                 </DialogTrigger>
                                 <DialogContent >
                                     <DialogHeader>
-                                        <DialogTitle>Pengajuan Anggaran</DialogTitle>
+                                        <DialogTitle>Tambah Pembayaran</DialogTitle>
+                                        <DialogDescription>
+                                            Masukkan data pembayaran
+                                        </DialogDescription>
                                     </DialogHeader>
                                     <form onSubmit={submit}>
                                         <div className='mb-4'>
                                             <Label htmlFor="mahasiswa_id">Mahasiswa</Label>
-                                            <ComboboxInput
-                                                data={mahasiswa}
+                                            <CommandCombobox
                                                 value={data.mahasiswa_id}
-                                                onChange={(value) => setData("mahasiswa_id", value)}
-                                                valueKey="id"
-                                                labelKey="name"
-                                                placeholder="Pilih Mahasiswa"
-                                            />
+                                                onValueChange={(value) => setData('mahasiswa_id', value)}
+                                                options={optionsMahasiswa} />
                                             {errors.mahasiswa_id && <p className="text-red-600">{errors.mahasiswa_id}</p>}
                                         </div>
                                         <div className='mb-4'>

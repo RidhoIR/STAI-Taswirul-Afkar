@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\DetailJenisPembayaran;
+use App\Models\TransaksiHarian;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -21,10 +22,15 @@ class DatabaseSeeder extends Seeder
             TridharmaSeeder::class,
             SemesterSeeder::class,
             MahasiswaSeeder::class,
-            JenisPembayaran::class,
+            JenisPembayaranSeeder::class,
             DetailJenisPembayaranSeeder::class,
             TanggunganPembayaranSeeder::class,
+            JabatanSeeder::class,
             // TransaksiSeeder::class
+            // HonorariumSeeder::class,
+            // HonorSkripsiSeeder::class,
+            TransaksiHarianSeeder::class,
+            // HonorUjianSeeder::class,
         ]);
     }
 }

@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('detail_jenis_pembayarans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('jenis_pembayaran_id')->constrained()->onDelete('cascade');
-            $table->foreignId('semester_id')->constrained()->onDelete('cascade');
+            $table->foreignId('semester_id')->nullable()->constrained()->onDelete('cascade');
             $table->integer('jumlah'); // jumlah default
             $table->timestamps();
-
         });
     }
 

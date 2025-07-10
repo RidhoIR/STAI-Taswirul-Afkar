@@ -15,7 +15,6 @@ class MahasiswaSeeder extends Seeder
     public function run(): void
     {
         Mahasiswa::create([
-            'semester_id' => 1,
             'name' => 'Ahmad Fauzan',
             'nim' => '220101001',
             'email' => 'ahmad@gmail.com',
@@ -26,7 +25,6 @@ class MahasiswaSeeder extends Seeder
             'updated_at' => now(),
         ]);
         Mahasiswa::create([
-            'semester_id' => 1,
             'name' => 'Soekarno',
             'nim' => '220101002',
             'email' => 'soekarno@gmail.com',

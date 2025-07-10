@@ -48,16 +48,16 @@ interface TransaksiProps {
     tanggungan_pembayaran: TanggunganPembayaran[];
     transaksi: Transaksi[];
     mahasiswa: Mahasiswa;
-    
+
 }
 
-const Index = ({ transaksi, mahasiswa, tanggungan_pembayaran,}: TransaksiProps) => {
+const Index = ({ transaksi, mahasiswa, tanggungan_pembayaran, }: TransaksiProps) => {
     const { flash } = usePage<PageProps>().props;
     // const { mahasiswa } = usePage<PageProps>().props;
     const { jenis_pembayaran } = usePage<PageProps>().props;
-    const {semesters} = usePage<PageProps>().props;
+    const { semesters } = usePage<PageProps>().props;
     console.log(flash);
-    
+
 
 
     // console.log(mahasiswa);
@@ -120,6 +120,36 @@ const Index = ({ transaksi, mahasiswa, tanggungan_pembayaran,}: TransaksiProps) 
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     });
 
+    const [selectedSemester, setSelectedSemester] = useState<string>('all');
+
+
+    const filterBySemester = <T extends { semester_id?: number; detail_jenis_pembayaran?: { semester: { id: number } } }>(
+        data: T[],
+        semesterId: string
+    ): T[] => {
+        if (semesterId === 'all') return data;
+
+        return data.filter((item) => {
+            // Untuk tanggungan_pembayaran
+            if (item.detail_jenis_pembayaran?.semester?.id) {
+                return item.detail_jenis_pembayaran.semester.id.toString() === semesterId;
+            }
+
+            // Untuk transaksi
+            if (item.semester_id) {
+                return item.semester_id.toString() === semesterId;
+            }
+
+            return false;
+        });
+    };
+
+    const filteredTanggungan = filterBySemester(tanggungan_pembayaran, selectedSemester);
+    const filteredTransaksi = filterBySemester(transaksi, selectedSemester);
+
+    const selectedJenis = jenis_pembayaran.find(jp => jp.id.toString() === data.jenis_pembayaran_id);
+    const isOnce = selectedJenis?.is_once;
+
 
 
     return (
@@ -145,87 +175,107 @@ const Index = ({ transaksi, mahasiswa, tanggungan_pembayaran,}: TransaksiProps) 
                                         </div>
                                     </div>
                                 </div>
-                                <Dialog open={open} onOpenChange={setOpen}>
-                                    <DialogTrigger asChild>
-                                        <Button variant="blue">
-                                            <Download className='mr-2' />Tambah Pembayaran
-                                        </Button>
-                                    </DialogTrigger>
-                                    <DialogContent>
-                                        <DialogHeader>
-                                            <DialogTitle>Pengajuan Anggaran</DialogTitle>
-                                        </DialogHeader>
-                                        <form onSubmit={submit}>
-                                            <div className='mb-4'>
-                                                <Label htmlFor="jenis_pembayaran_id">Jenis Pembayaran</Label>
-                                                <Select
-                                                    value={data.jenis_pembayaran_id}
-                                                    onValueChange={(value) => setData('jenis_pembayaran_id', value)}
-                                                >
-                                                    <SelectTrigger className="w-full">
-                                                        <SelectValue placeholder="Pilih jenis pembayaran" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {jenis_pembayaran.map((jenis_pembayaran, i) => (
-                                                            <SelectItem key={i} value={jenis_pembayaran.id.toString()}>
-                                                                {jenis_pembayaran.nama_pembayaran}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                                {errors.jenis_pembayaran_id && <p className="text-red-600">{errors.jenis_pembayaran_id}</p>}
-                                            </div>
-                                            <div className='mb-4'>
-                                                <Label htmlFor="semester_id">Semester</Label>
-                                                <Select
-                                                    value={data.semester_id}
-                                                    onValueChange={(value) => setData('semester_id', value)}
-                                                >
-                                                    <SelectTrigger className="w-full">
-                                                        <SelectValue placeholder="Pilih jenis pembayaran" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {semesters.map((semester, i) => (
-                                                            <SelectItem key={i} value={semester.id.toString()}>
-                                                                {semester.semester} {semester.tahun_ajaran}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                                {errors.semester_id && <p className="text-red-600">{errors.semester_id}</p>}
-                                            </div>
-                                            <div className='mb-4'>
-                                                <Label htmlFor='deskripsi'>Deskripsi</Label>
-                                                <Input
-                                                    id='deskripsi'
-                                                    type='text'
-                                                    value={data.deskripsi}
-                                                    onChange={(e) => setData('deskripsi', e.target.value)}
-                                                />
-                                                {errors.deskripsi && <p className='text-red-500'>{errors.deskripsi}</p>}
-                                            </div>
-                                            <div className='mb-4'>
-                                                <Label htmlFor='jumlah'>Jumlah</Label>
-                                                <Input
-                                                    id='jumlah'
-                                                    type='text'
-                                                    value={formatRupiah(data.jumlah)} // Tampilkan nilai terformat dengan awalan Rp
-                                                    onChange={handleJumlahChange} // Tangani perubahan input
-                                                    required
-                                                />
-                                                {errors.jumlah && <p className='text-red-500'>{errors.jumlah}</p>}
-                                            </div>
-                                            <DialogFooter>
-                                                <Button type="submit" disabled={processing}>
-                                                    Ajukan
-                                                </Button>
-                                                <Button variant="outline" onClick={() => setOpen(false)}>
-                                                    Batal
-                                                </Button>
-                                            </DialogFooter>
-                                        </form>
-                                    </DialogContent>
-                                </Dialog>
+                                <div className="flex items-center gap-2">
+                                    <Select
+                                        value={selectedSemester}
+                                        onValueChange={(value) => setSelectedSemester(value)}
+                                    >
+                                        <SelectTrigger className="w-full md:w-[200px]">
+                                            <SelectValue placeholder="Pilih Semester" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="all">Semua Semester</SelectItem>
+                                            {semesters.map((semester, i) => (
+                                                <SelectItem key={i} value={semester.id.toString()}>
+                                                    {semester.semester} {semester.tahun_ajaran}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <Dialog open={open} onOpenChange={setOpen}>
+                                        <DialogTrigger asChild>
+                                            <Button variant="blue">
+                                                <Download className='mr-2' />Tambah Pembayaran
+                                            </Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>Pengajuan Anggaran</DialogTitle>
+                                            </DialogHeader>
+                                            <form onSubmit={submit}>
+                                                <div className='mb-4'>
+                                                    <Label htmlFor="jenis_pembayaran_id">Jenis Pembayaran</Label>
+                                                    <Select
+                                                        value={data.jenis_pembayaran_id}
+                                                        onValueChange={(value) => setData('jenis_pembayaran_id', value)}
+                                                    >
+                                                        <SelectTrigger className="w-full">
+                                                            <SelectValue placeholder="Pilih jenis pembayaran" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            {jenis_pembayaran.map((jenis_pembayaran, i) => (
+                                                                <SelectItem key={i} value={jenis_pembayaran.id.toString()}>
+                                                                    {jenis_pembayaran.nama_pembayaran}
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                    {errors.jenis_pembayaran_id && <p className="text-red-600">{errors.jenis_pembayaran_id}</p>}
+                                                </div>
+                                                {!isOnce && (
+                                                    <div className='mb-4'>
+                                                        <Label htmlFor="semester_id">Semester</Label>
+                                                        <Select
+                                                            value={data.semester_id}
+                                                            onValueChange={(value) => setData('semester_id', value)}
+                                                        >
+                                                            <SelectTrigger className="w-full">
+                                                                <SelectValue placeholder="Pilih Semester" />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                {semesters.map((semester, i) => (
+                                                                    <SelectItem key={i} value={semester.id.toString()}>
+                                                                        {semester.semester} {semester.tahun_ajaran}
+                                                                    </SelectItem>
+                                                                ))}
+                                                            </SelectContent>
+                                                        </Select>
+                                                        {errors.semester_id && <p className="text-red-600">{errors.semester_id}</p>}
+                                                    </div>
+                                                )}
+                                                <div className='mb-4'>
+                                                    <Label htmlFor='deskripsi'>Deskripsi</Label>
+                                                    <Input
+                                                        id='deskripsi'
+                                                        type='text'
+                                                        value={data.deskripsi}
+                                                        onChange={(e) => setData('deskripsi', e.target.value)}
+                                                    />
+                                                    {errors.deskripsi && <p className='text-red-500'>{errors.deskripsi}</p>}
+                                                </div>
+                                                <div className='mb-4'>
+                                                    <Label htmlFor='jumlah'>Jumlah</Label>
+                                                    <Input
+                                                        id='jumlah'
+                                                        type='text'
+                                                        value={formatRupiah(data.jumlah)} // Tampilkan nilai terformat dengan awalan Rp
+                                                        onChange={handleJumlahChange} // Tangani perubahan input
+                                                        required
+                                                    />
+                                                    {errors.jumlah && <p className='text-red-500'>{errors.jumlah}</p>}
+                                                </div>
+                                                <DialogFooter>
+                                                    <Button type="submit" disabled={processing}>
+                                                        Ajukan
+                                                    </Button>
+                                                    <Button variant="outline" onClick={() => setOpen(false)}>
+                                                        Batal
+                                                    </Button>
+                                                </DialogFooter>
+                                            </form>
+                                        </DialogContent>
+                                    </Dialog>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
@@ -238,10 +288,10 @@ const Index = ({ transaksi, mahasiswa, tanggungan_pembayaran,}: TransaksiProps) 
                     <TabsTrigger value="pembayaran">Data Pembayaran</TabsTrigger>
                 </TabsList>
                 <TabsContent value="riwayat">
-                    <DataTable data={transaksi} columns={column} />
+                    <DataTable data={filteredTransaksi} columns={column} />
                 </TabsContent>
                 <TabsContent value="pembayaran">
-                    <DataTable data={tanggungan_pembayaran} columns={columnTanggungan} />
+                    <DataTable data={filteredTanggungan} columns={columnTanggungan} />
                 </TabsContent>
             </Tabs>
         </TestLayout >

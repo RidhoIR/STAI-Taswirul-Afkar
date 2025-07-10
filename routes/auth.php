@@ -26,7 +26,7 @@ Route::middleware('guest')->group(function () {
     //login mahasiswa
     Route::post('login-auth-mahasiswa',[MahasiswaAuthController::class,'login'])->name('login-mahasiswa');
     Route::get('login-mahasiswa',[MahasiswaAuthController::class,'showLogin']);
-    // Route::post('/mahasiswa/logout', [MahasiswaAuthController::class, 'logout'])->name('mahasiswa.logout');
+    Route::post('/mahasiswa/logout', [MahasiswaAuthController::class, 'logout'])->name('mahasiswa.logout');
 
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])

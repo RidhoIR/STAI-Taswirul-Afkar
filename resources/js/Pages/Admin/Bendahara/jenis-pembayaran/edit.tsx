@@ -51,7 +51,7 @@ const Edit = ({ jenis_pembayaran }: JenisPembayaranProps) => {
     // Inisialisasi form dengan data
     const { put, data, setData, processing, errors } = useForm({
         nama_pembayaran: jenis_pembayaran.nama_pembayaran,
-        jumlah: jenis_pembayaran.jumlah.toString(), // Pastikan menggunakan angka murni
+        is_once: jenis_pembayaran.is_once ?? false,
     });
 
     const formatRupiah = (value: string) => {
@@ -61,10 +61,6 @@ const Edit = ({ jenis_pembayaran }: JenisPembayaranProps) => {
     };
 
     // Handling jumlah anggaran input change
-    const handleJumlahChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value.replace(/\D/g, '');
-        setData('jumlah', value);
-    };
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -73,7 +69,6 @@ const Edit = ({ jenis_pembayaran }: JenisPembayaranProps) => {
         put(route("admin.bendahara.jenis-pembayaran.update", jenis_pembayaran.id), {
             data: {
                 nama_pembayaran: data.nama_pembayaran,
-                jumlah: cleanRupiah(data.jumlah), // Hapus format Rupiah sebelum dikirim
             },
             onSuccess: () => setOpen(false),
         });
@@ -105,13 +100,16 @@ const Edit = ({ jenis_pembayaran }: JenisPembayaranProps) => {
                             {errors.nama_pembayaran && <p className="text-red-600 text-sm">{errors.nama_pembayaran}</p>}
                         </div>
                         <div>
-                            <Label htmlFor="jumlah">Jumlah</Label>
-                            <Input
-                                id="jumlah"
-                                value={formatRupiah(data.jumlah)}  // Format jumlah untuk tampil
-                                onChange={handleJumlahChange}  // Fungsi untuk handle perubahan input
-                            />
-                            {errors.jumlah && <p className="text-red-600 text-sm">{errors.jumlah}</p>}
+                            <Label htmlFor="is_once" className="flex items-center space-x-2">
+                                <input
+                                    type="checkbox"
+                                    id="is_once"
+                                    checked={data.is_once ?? false}
+                                    onChange={e => setData('is_once', e.target.checked)}
+                                    className="mr-2"
+                                />
+                                <span>Hanya Sekali Bayar?</span>
+                            </Label>
                         </div>
                         <DialogFooter>
                             <Button type="submit" disabled={processing}>

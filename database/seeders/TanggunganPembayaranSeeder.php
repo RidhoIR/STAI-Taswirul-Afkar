@@ -17,23 +17,29 @@ class TanggunganPembayaranSeeder extends Seeder
      */
     public function run(): void
     {
-        $semesters = Semester::all();
-        $jenisPembayarans = DetailJenisPembayaran::all();
         $mahasiswas = Mahasiswa::all();
+        $detailPembayarans = DetailJenisPembayaran::with('jenis_pembayaran')->get();
 
-        
-            foreach ($mahasiswas as $mahasiswa) {
-                foreach ($jenisPembayarans as $jenis) {
-                    TanggunganPembayaran::firstOrCreate([
-                        'mahasiswa_id' => $mahasiswa->id,
-                        'detail_jenis_pembayaran_id' => $jenis->id,
-                        // 'semester_id' => $semester->id,
-                    ], [
-                        'jumlah' => $jenis->jumlah,
-                        'status' => 'belum_bayar',
-                    ]);
+        foreach ($mahasiswas as $mahasiswa) {
+            foreach ($detailPembayarans as $detail) {
+                // Jika is_once dan mahasiswa sudah punya tanggungan jenis ini, skip
+                if (
+                    $detail->jenis_pembayaran->is_once &&
+                    TanggunganPembayaran::where('mahasiswa_id', $mahasiswa->id)
+                    ->where('detail_jenis_pembayaran_id', $detail->id)
+                    ->exists()
+                ) {
+                    continue;
                 }
+
+                TanggunganPembayaran::firstOrCreate([
+                    'mahasiswa_id' => $mahasiswa->id,
+                    'detail_jenis_pembayaran_id' => $detail->id,
+                ], [
+                    'jumlah' => $detail->jumlah,
+                    'status' => 'belum_bayar',
+                ]);
             }
-        
+        }
     }
 }

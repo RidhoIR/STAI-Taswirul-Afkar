@@ -8,33 +8,36 @@ class JenisPembayaran extends Model
 {
     protected $fillable = [
         'nama_pembayaran',
-        'jumlah',
+        'is_once',
+    ];
+    protected $casts = [
+        'is_once' => 'boolean',
     ];
 
-    protected static function booted()
-{
-    static::created(function ($jenis) {
-        $mahasiswas = Mahasiswa::all();
-        $semesters = Semester::all();
+    //     protected static function booted()
+    // {
+    //     static::created(function ($jenis) {
+    //         $mahasiswas = Mahasiswa::all();
+    //         $semesters = Semester::all();
 
-        foreach ($semesters as $semester) {
-            foreach ($mahasiswas as $mahasiswa) {
-                TanggunganPembayaran::create([
-                    'mahasiswa_id' => $mahasiswa->id,
-                    'semester_id' => $semester->id,
-                    'detail_jenis_pembayaran_id' => $jenis->id,
-                    'jumlah' => $jenis->jumlah,
-                    'status' => 'belum_bayar',
-                ]);
-            }
-        }
-    });
-}
+    //         foreach ($semesters as $semester) {
+    //             foreach ($mahasiswas as $mahasiswa) {
+    //                 TanggunganPembayaran::create([
+    //                     'mahasiswa_id' => $mahasiswa->id,
+    //                     'semester_id' => $semester->id,
+    //                     'detail_jenis_pembayaran_id' => $jenis->id,
+    //                     'jumlah' => $jenis->jumlah,
+    //                     'status' => 'belum_bayar',
+    //                 ]);
+    //             }
+    //         }
+    //     });
+    // }
 
-    public function transaksi()
-    {
-        return $this->hasMany(Transaksi::class);
-    }
+    // public function transaksi()
+    // {
+    //     return $this->hasMany(Transaksi::class);
+    // }
 
     // public function tanggungan_pembayaran()
     // {

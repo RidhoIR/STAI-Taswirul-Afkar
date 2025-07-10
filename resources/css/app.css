@@ -27,7 +27,12 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem
+    --radius: 0.5rem;
+    --chart-lunas: #10B981;        /* Emerald-500 */
+    --chart-belum-lunas: #F59E0B;  /* Amber-500 */
+    --chart-belum-bayar: #EF4444;  /* Red-500 */
+    --color-pemasukan: #4ade80; /* Hijau */
+    --color-pengeluaran: #f87171; /* Merah */
   ;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -80,3 +85,5 @@
     @apply bg-background text-foreground;
   }
 }
+
+

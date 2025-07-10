@@ -9,6 +9,7 @@ import { Checkbox } from "@/Components/ui/checkbox"
 import { ArrowUpDown } from "lucide-react";
 // import Delete from "../delete";
 import Edit from "../edit";
+import Delete from "../delete";
 // import create from "../create"
 
 
@@ -45,9 +46,24 @@ export const column: ColumnDef<Mahasiswa>[] = [
     },
     {
         accessorKey: "name",
-        header: "Nama",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="default"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Nama
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
+    },
+    {
+        accessorKey: "jenis_mahasiswa",
+        header: "Kategori",
         cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("name")}</div>
+            <div className="capitalize">{row.getValue("jenis_mahasiswa")}</div>
         ),
     },
     {
@@ -64,21 +80,6 @@ export const column: ColumnDef<Mahasiswa>[] = [
             )
         },
         cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-    },
-    {
-        accessorKey: "semester_id",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="default"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Semester
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => <div className="lowercase">{row.original.semester.tahun_ajaran + ' ' + row.original.semester.semester}</div>,
     },
     {
         accessorKey: "status",
@@ -134,7 +135,7 @@ export const column: ColumnDef<Mahasiswa>[] = [
             return (
 
                 <div className="flex gap-2 ">
-                    {/* <Delete user={user} /> */}
+                    <Delete mahasiswa={mahasiswa} />
                     <Edit mahasiswas={mahasiswa} />
                 </div>
             )

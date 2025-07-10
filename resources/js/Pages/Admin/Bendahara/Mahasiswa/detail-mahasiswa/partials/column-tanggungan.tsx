@@ -30,24 +30,9 @@ import { get } from "http";
 // Definisikan kolom tabel produk
 export const columnTanggungan: ColumnDef<TanggunganPembayaran>[] = [
     {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
+        id: "no",
+        header: "No.",
+        cell: ({ row }) => row.index + 1,
         enableSorting: false,
         enableHiding: false,
     },
@@ -62,9 +47,32 @@ export const columnTanggungan: ColumnDef<TanggunganPembayaran>[] = [
     {
         accessorFn: row => row.detail_jenis_pembayaran.semester.semester + ' ' + row.detail_jenis_pembayaran.semester.tahun_ajaran,
         header: "Semester",
+        cell: ({ row }) => {
+            const semester = row.original.detail_jenis_pembayaran.semester;
+            return (
+                <div className="capitalize">
+                    {semester
+                        ? `${semester.semester} ${semester.tahun_ajaran}`
+                        : <span className="text-red-500">Tidak ada semester</span>
+                    }
+                </div>
+            );
+        },
+    },
+    {
+        header: "Sisa Pembayaran",
         cell: ({ row }) => (
-            // console.log(row.original.jenis_pembayaran_id.nama_pembayaran),
-            <div className="capitalize">{row.original.detail_jenis_pembayaran.semester.semester} {row.original.detail_jenis_pembayaran.semester.tahun_ajaran}</div>
+            <div className="text-red-600 font-semibold">
+                <FormatRupiah value={row.original.sisa_pembayaran} />
+            </div>
+        ),
+    },
+    {
+        header: "Total Dibayar",
+        cell: ({ row }) => (
+            <div className="text-blue-600 font-semibold">
+                <FormatRupiah value={row.original.total_dibayar} />
+            </div>
         ),
     },
     {
@@ -78,7 +86,7 @@ export const columnTanggungan: ColumnDef<TanggunganPembayaran>[] = [
     },
     {
         accessorKey: "status",
-        header: "Status Pencairan",
+        header: "Status",
         cell: ({ row }) => {
             const status = row.getValue("status") as string;
 
@@ -89,16 +97,24 @@ export const columnTanggungan: ColumnDef<TanggunganPembayaran>[] = [
                     badgeClass = 'bg-green-500 text-white font-bold';
                     break;
                 case 'belum_bayar':
-                    badgeClass = 'bg-yellow-500 text-black font-bold';
+                    badgeClass = 'bg-red-500 text-white font-bold';
+                    break;
+                case 'belum_lunas':
+                    badgeClass = 'bg-yellow-500 text-white font-bold';
                     break;
                 default:
                     badgeClass = 'bg-gray-500 text-white font-bold';
                     break;
             }
 
+            const formattedStatus = status
+                .split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+
             return (
                 <div className={`uppercase inline-flex items-center px-3 py-1 rounded-full ${badgeClass}`}>
-                    {status}
+                    {formattedStatus}
                 </div>
             );
         },

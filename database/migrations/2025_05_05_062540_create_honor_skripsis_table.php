@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('honoraria', function (Blueprint $table) {
+        Schema::create('honor_skripsis', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('semester_id')->constrained()->onDelete('cascade');
+            $table->string('nama'); // Dosen atau orang yang diberi honor
+            $table->date('tanggal');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('honoraria');
+        Schema::dropIfExists('honor_skripsis');
     }
 };

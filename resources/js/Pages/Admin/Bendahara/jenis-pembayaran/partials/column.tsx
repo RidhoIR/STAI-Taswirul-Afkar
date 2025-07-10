@@ -28,24 +28,9 @@ import Delete from "../delete";
 // Definisikan kolom tabel produk
 export const column: ColumnDef<Jenis_pembayaran>[] = [
     {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
+        id: "no",
+        header: "No.",
+        cell: ({ row }) => row.index + 1,
         enableSorting: false,
         enableHiding: false,
     },
@@ -63,23 +48,6 @@ export const column: ColumnDef<Jenis_pembayaran>[] = [
             )
         },
         cell: ({ row }) => <div className="uppercase">{row.getValue("nama_pembayaran")}</div>,
-    },
-    {
-        accessorKey: "jumlah",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="default"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Harga
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => <div className="uppercase">
-            <FormatRupiah value={row.getValue("jumlah")} />
-        </div>
     },
     {
         id: "actions",

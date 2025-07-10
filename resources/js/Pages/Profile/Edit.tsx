@@ -17,9 +17,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 
 
+
 export default function Edit({ auth, mustVerifyEmail, status }: PageProps<{ mustVerifyEmail: boolean, status?: string }>) {
-    const name = auth.user ? auth.user.name : auth.mahasiswa ? auth.mahasiswa.name : 'User';
-    const email = auth.user ? auth.user.email : auth.mahasiswa ? auth.mahasiswa.email : 'email tidak ada';
+    const name = auth?.user?.name || auth?.mahasiswa?.name || 'User';
+    const email = auth?.user?.email || auth?.mahasiswa?.email || 'Email tidak tersedia';
+    console.log(auth);
     return (
         <TestLayout
         // user={auth.user}

@@ -32,12 +32,24 @@ class User extends Authenticatable
         'role',
     ];
 
-    public function anggarans(){
+    public function anggarans()
+    {
         return $this->hasMany(Anggaran::class);
     }
 
-    public function transaksis(){
+    public function transaksis()
+    {
         return $this->hasMany(Transaksi::class);
+    }
+
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
+    public function transaksi_harians()
+    {
+        return $this->hasMany(TransaksiHarian::class);
     }
 
     /**

@@ -126,9 +126,9 @@ export function DataTable<TData>({ data, columns }: DataTableProps<TData>) {
           {/* Header Tabel */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="bg-gray-300 hover:bg-blue-00 border-b-8 border-gray-900 shadow-md">
+              <TableRow key={headerGroup.id} className="bg-white hover:bg-blue-00 border-b-2 border-gray-200 ">
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="text-black">
+                  <TableHead key={header.id} className="text-muted-foreground font-bold">
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
@@ -160,14 +160,41 @@ export function DataTable<TData>({ data, columns }: DataTableProps<TData>) {
         </Table>
       </div>
       {/* Footer Tabel */}
-      <div className="flex items-center justify-end space-x-2 py-4">
-        {/* Informasi seleksi baris */}
-        <div className="flex-1 text-sm text-muted-foreground">
+      <div className="flex items-center justify-between py-4 flex-wrap gap-2">
+        {/* Info seleksi */}
+        <div className="text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        {/* Tombol navigasi halaman */}
-        <div className="space-x-2">
+
+        {/* Selector jumlah data per halaman */}
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">Rows per page:</span>
+          <select
+            value={table.getState().pagination.pageSize}
+            onChange={(e) => {
+              table.setPageSize(Number(e.target.value));
+            }}
+            className="rounded-md border-gray-300 text-sm"
+          >
+            {[5, 10, 20, 50, 100].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Navigasi halaman */}
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<<"}
+          </Button>
           <Button
             variant="outline"
             size="sm"
@@ -176,6 +203,13 @@ export function DataTable<TData>({ data, columns }: DataTableProps<TData>) {
           >
             Previous
           </Button>
+          <span className="text-sm text-muted-foreground">
+            Page{" "}
+            <strong>
+              {table.getState().pagination.pageIndex + 1} of{" "}
+              {table.getPageCount()}
+            </strong>
+          </span>
           <Button
             variant="outline"
             size="sm"
@@ -183,6 +217,14 @@ export function DataTable<TData>({ data, columns }: DataTableProps<TData>) {
             disabled={!table.getCanNextPage()}
           >
             Next
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+          >
+            {">>"}
           </Button>
         </div>
       </div>
