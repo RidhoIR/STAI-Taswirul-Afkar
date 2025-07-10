@@ -117,7 +117,7 @@ const Index = ({ transaksi, }: TransaksiProps) => {
                                     Riwayat Pembayaran
                                 </h1>
                             </div>
-                            <Dialog open={open} onOpenChange={setOpen} modal={false}>
+                            {/* <Dialog open={open} onOpenChange={setOpen} modal={false}>
                                 <DialogTrigger asChild>
                                     <Button variant="blue">
                                         <Download className='mr-2' />Tambah Pembayaran
@@ -209,7 +209,7 @@ const Index = ({ transaksi, }: TransaksiProps) => {
                                         </DialogFooter>
                                     </form>
                                 </DialogContent>
-                            </Dialog>
+                            </Dialog> */}
                         </div>
                         <hr className='border-t-2 border-gray-400' />
                     </CardContent>

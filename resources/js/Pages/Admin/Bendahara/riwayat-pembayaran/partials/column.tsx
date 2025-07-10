@@ -54,7 +54,7 @@ export const column: ColumnDef<Transaksi>[] = [
     },
     {
         header: "Nama",
-        accessorFn: row => row.mahasiswa.name,
+        accessorKey: "mahasiswa.name",
         cell: ({ row }) => <div className="capitalize">{row.original.mahasiswa.name}</div>
     },
     {
