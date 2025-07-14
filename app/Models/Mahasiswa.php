@@ -22,7 +22,7 @@ class Mahasiswa extends Authenticatable
     {
         static::created(function ($mahasiswa) {
             // ✅ Lewati mahasiswa beasiswa penuh
-            if ($mahasiswa->jenis_mahasiswa === 'beasiswa_penuh') {
+            if ($mahasiswa->jenis_mahasiswa === 'beasiswa') {
                 return;
             }
 
