@@ -177,9 +177,10 @@
                         <div style="margin-top: 10px;">
                             @php
                                 // Buat URL QR Code secara manual
-                                $url =
-                                    'https://7f26-202-51-101-5.ngrok-free.app/validasi-kartu/' .
-                                    $mahasiswa->id . '/'.$tipe;
+                                $url = route('validasi.kartu', [
+                                    'id' => $mahasiswa->id,
+                                    'tipe' => 'Proposal',
+                                ]);
 
                                 // Generate SVG QR-nya
                                 $svg = QrCode::format('svg')->size(40)->generate($url);

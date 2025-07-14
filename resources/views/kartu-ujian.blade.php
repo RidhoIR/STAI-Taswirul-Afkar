@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Kartu Ujian {{$tipe}}</title>
+    <title>Kartu Ujian {{ $tipe }}</title>
     <style>
         @page {
             margin-top: 5px;
@@ -136,7 +136,7 @@
     <div class="box">
         <div class="container">
             <img src="{{ public_path('images/kop_staita_copy.png') }}" class="header-img" alt="Kop Surat">
-            <div class="title">KARTU UJIAN {{$tipe}}</div>
+            <div class="title">KARTU UJIAN {{ $tipe }}</div>
             <table class="main-table">
                 <tr>
                     <td class="info-cell">
@@ -151,7 +151,7 @@
                             </tr>
                             <tr>
                                 <td>Program Studi</td>
-                                <td>: {{$mahasiswa->prodi}}</td>
+                                <td>: {{ $mahasiswa->prodi }}</td>
                             </tr>
                             <tr>
                                 <td>Semester</td>
@@ -159,7 +159,7 @@
                             </tr>
                             <tr>
                                 <td>Tahun Akademik</td>
-                                <td>: {{$semester->tahun_ajaran}}</td>
+                                <td>: {{ $semester->tahun_ajaran }}</td>
                             </tr>
                         </table>
 
@@ -181,10 +181,11 @@
                         <div style="margin-top: 10px;">
                             @php
                                 // Buat URL QR Code secara manual
-                                $url =
-                                    'https://7f26-202-51-101-5.ngrok-free.app/validasi-kartu/' .
-                                    $mahasiswa->id .
-                                    '/' . $tipe . '/' . $semester->id;
+                                $url = route('validasi.kartu', [
+                                    'id' => $mahasiswa->id,
+                                    'tipe' => $tipe,
+                                    'semester' => $semester->id,
+                                ]);
 
                                 // Generate SVG QR-nya
                                 $svg = QrCode::format('svg')->size(40)->generate($url);
