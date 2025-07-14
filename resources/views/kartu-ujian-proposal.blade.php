@@ -177,7 +177,7 @@
                         <div style="margin-top: 10px;">
                             @php
                                 // Buat URL QR Code secara manual
-                                $url = route('validasi.kartu', [
+                                $url = route('kartu.validasi', [
                                     'id' => $mahasiswa->id,
                                     'tipe' => 'Proposal',
                                 ]);
