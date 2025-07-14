@@ -111,7 +111,7 @@ const index = ({ mahasiswas }: MahasiswaProps) => {
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="reguler">Reguler</SelectItem>
-                                                <SelectItem value="beasiswa_penuh">Beasiswa</SelectItem>
+                                                <SelectItem value="beasiswa">Beasiswa</SelectItem>
                                             </SelectContent>
                                         </Select>
                                         {errors.jenis_mahasiswa && <p className="text-red-600">{errors.jenis_mahasiswa}</p>}
