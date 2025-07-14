@@ -114,7 +114,6 @@ const index = ({ users }: UserProps) => {
                                                 <SelectValue placeholder="Pilih Role" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="mahasiswa">Mahasiswa</SelectItem>
                                                 <SelectItem value="bendahara">Bendahara</SelectItem>
                                                 <SelectItem value="pengurus">Pengurus</SelectItem>
                                                 <SelectItem value="admin">Admin</SelectItem>
