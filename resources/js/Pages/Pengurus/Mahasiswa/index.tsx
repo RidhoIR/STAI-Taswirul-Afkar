@@ -84,6 +84,7 @@ const index = ({ mahasiswas }: MahasiswaProps) => {
                                             id="nim"
                                             value={data.nim}
                                             onChange={e => setData('nim', e.target.value)}
+                                            required
                                         />
                                         {errors.nim && <p className="text-red-600">{errors.nim}</p>}
                                     </div>
@@ -93,6 +94,7 @@ const index = ({ mahasiswas }: MahasiswaProps) => {
                                             id="name"
                                             value={data.name}
                                             onChange={e => setData('name', e.target.value)}
+                                            required
                                         />
                                         {errors.name && <p className="text-red-600">{errors.name}</p>}
                                     </div>
@@ -101,6 +103,7 @@ const index = ({ mahasiswas }: MahasiswaProps) => {
                                         <Select
                                             value={data.jenis_mahasiswa}
                                             onValueChange={(value) => setData('jenis_mahasiswa', value)}
+                                            required
                                         >
                                             <SelectTrigger className="w-full">
                                                 <SelectValue placeholder="Pilih Jenis Mahasiswa" />
@@ -139,17 +142,18 @@ const index = ({ mahasiswas }: MahasiswaProps) => {
                                             type="text"
                                             value={data.tahun_masuk}
                                             onChange={e => setData('tahun_masuk', e.target.value)}
+                                            required
                                         />
                                         {errors.tahun_masuk && <p className="text-red-600">{errors.tahun_masuk}</p>}
                                     </div>
                                     <div>
                                         <Label htmlFor="password">Password<span className='text-red-600'>*</span></Label>
-                                        <Input id="password" type="password" value={data.password} onChange={e => setData('password', e.target.value)} />
+                                        <Input id="password" type="password" value={data.password} onChange={e => setData('password', e.target.value)} required/>
                                         {errors.password && <span className='text-red-600'>{errors.password}</span>}
                                     </div>
                                     <div>
                                         <Label htmlFor="password_confirmation">Confirm Password<span className='text-red-600'>*</span></Label>
-                                        <Input id="password_confirmation" type="password" value={data.password_confirmation} onChange={e => setData('password_confirmation', e.target.value)} />
+                                        <Input id="password_confirmation" type="password" value={data.password_confirmation} onChange={e => setData('password_confirmation', e.target.value)} required/>
                                         {errors.password_confirmation && <span>{errors.password_confirmation}</span>}
                                     </div>
                                     {/* <div>
