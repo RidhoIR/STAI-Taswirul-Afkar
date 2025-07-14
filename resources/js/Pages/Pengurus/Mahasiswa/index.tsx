@@ -56,6 +56,7 @@ const index = ({ mahasiswas }: MahasiswaProps) => {
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
         post(route('pengurus.mahasiswa.store'));
+        setOpen(false);
     };
     return (
         <TestLayout>
