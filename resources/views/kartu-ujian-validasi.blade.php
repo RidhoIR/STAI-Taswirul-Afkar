@@ -23,7 +23,7 @@
 
         .status {
             font-weight: bold;
-            color: {{ $statusPembayaran === 'lunas' ? 'green' : 'red' }};
+            color: {{ in_array($statusPembayaran, ['lunas', 'lunas (beasiswa)']) ? 'green' : 'red' }};
         }
     </style>
 </head>
@@ -33,13 +33,16 @@
         <h2>Validasi Kartu Ujian {{ ucfirst($tipe) }}</h2>
         <p>Nama: <strong>{{ $mahasiswa->name }}</strong></p>
         <p>NIM: <strong>{{ $mahasiswa->nim }}</strong></p>
-        
+
         @if ($semester)
             <p>Semester: <strong>{{ $semester->semester }} ({{ $semester->tahun_ajaran }})</strong></p>
         @endif
 
         <p>Status Pembayaran <strong> {{ ucfirst($tipe) }}</strong> :
-            <span class="status">{{ strtoupper($statusPembayaran) }}</span>
+            <span
+                class="{{ in_array($statusPembayaran, ['lunas', 'lunas (beasiswa)']) ? 'text-green-500 font-bold' : 'text-red-500 font-bold' }}">
+                {{ strtoupper($statusPembayaran) }}
+            </span>
         </p>
     </div>
 </body>

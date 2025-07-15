@@ -289,12 +289,12 @@ class KartuUjianController extends Controller
         $mahasiswa = Auth::guard('mahasiswa')->user();
 
         if ($mahasiswa->jenis_mahasiswa === 'beasiswa') {
-            $pdf = Pdf::loadView('kartu-ujian-proposal', [
+            $pdf = Pdf::loadView('kartu-ujian-skripsi', [
                 'mahasiswa' => $mahasiswa,
-                'tipe' => 'Proposal',
+                'tipe' => 'Skripsi',
             ])->setPaper([0, 0, 297.64, 419.53], 'landscape');
 
-            return $pdf->stream('kartu-proposal.pdf');
+            return $pdf->stream('kartu-skripsi.pdf');
         }
 
         $status = $mahasiswa->tanggungan_pembayaran()
