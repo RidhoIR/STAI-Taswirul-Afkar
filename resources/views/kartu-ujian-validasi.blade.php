@@ -40,7 +40,7 @@
 
         <p>Status Pembayaran <strong> {{ ucfirst($tipe) }}</strong> :
             <span
-                class="{{ in_array($statusPembayaran, ['lunas', 'lunas (beasiswa)']) ? 'text-green-500 font-bold' : 'text-red-500 font-bold' }}">
+                style="color: {{ in_array($statusPembayaran, ['lunas', 'lunas (beasiswa)']) ? 'green' : 'red' }}; font-weight:bold;">
                 {{ strtoupper($statusPembayaran) }}
             </span>
         </p>
