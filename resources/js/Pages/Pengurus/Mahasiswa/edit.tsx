@@ -33,6 +33,8 @@ const Edit = ({ mahasiswas }: EditMahasiswaProps) => {
         name: mahasiswas.name,
         email: mahasiswas.email,
         nim: mahasiswas.nim,
+        jenis_mahasiswa: mahasiswas.jenis_mahasiswa,
+        no_telp: mahasiswas.no_telp ?? '',
         password: '',
         password_confirmation: '',
     });
@@ -41,7 +43,9 @@ const Edit = ({ mahasiswas }: EditMahasiswaProps) => {
         setData({
             name: mahasiswas.name,
             email: mahasiswas.email,
+            jenis_mahasiswa: mahasiswas.jenis_mahasiswa,
             nim: mahasiswas.nim,
+            no_telp: mahasiswas.no_telp ?? '',
             password: '',
             password_confirmation: '',
         });
@@ -49,7 +53,7 @@ const Edit = ({ mahasiswas }: EditMahasiswaProps) => {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(route("pengurus.mahasiswas.update", mahasiswas.id), {
+        put(route("pengurus.mahasiswa.update", mahasiswas.id), {
             onSuccess: () => setOpen(false),
         });
     };
@@ -99,6 +103,33 @@ const Edit = ({ mahasiswas }: EditMahasiswaProps) => {
                                     onChange={e => setData('email', e.target.value)}
                                 />
                                 {errors.email && <p className="text-red-600">{errors.email}</p>}
+                            </div>
+                            <div>
+                                <Label htmlFor="jenis_mahasiswa">Jenis Mahasiswa</Label>
+                                <Select
+                                    value={data.jenis_mahasiswa}
+                                    onValueChange={(value) => setData('jenis_mahasiswa', value)}
+                                    required
+                                >
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Pilih Jenis Mahasiswa" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="reguler">Reguler</SelectItem>
+                                        <SelectItem value="beasiswa">Beasiswa</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                {errors.jenis_mahasiswa && <p className="text-red-600">{errors.jenis_mahasiswa}</p>}
+                            </div>
+                            <div>
+                                <Label htmlFor="no_telp">No. Telepon</Label>
+                                <Input
+                                    id="no_telp"
+                                    type="text"
+                                    value={data.no_telp}
+                                    onChange={e => setData('no_telp', e.target.value)}
+                                />
+                                {errors.no_telp && <p className="text-red-600">{errors.no_telp}</p>}
                             </div>
                             <div>
                                 <Label htmlFor="password">Password</Label>

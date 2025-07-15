@@ -76,21 +76,25 @@ class MahasiswaController extends Controller
                 'name' => 'required|string|max:255',
                 'no_telp' => 'nullable|string',
                 'jenis_mahasiswa' => 'required|string|max:255',
-                'email' => 'nullable|email|unique:users,email,' . $id, // Ensure email is unique except for the current user
+                'email' => 'nullable|email|unique:users,email,', // Ensure email is unique except for the current user
                 'nim' => 'required|string',
                 'password' => 'nullable|string|min:8|confirmed', // password_confirmation juga diperlukan
             ]);
 
-            // Execute raw SQL to update the user by ID
-            DB::update('UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?', [
-                $validated['name'],
-                $validated['email'],
-                $validated['jenis_mahasiswa'],
-                $validated['no_telp'],
-                $validated['nim'],
-                $validated['password'],
-                $id
-            ]);
+            $mahasiswa = Mahasiswa::findOrFail($id);
+
+            // Execute raw SQL to update the mahasiswa by ID
+            $mahasiswa->name = $validated['name'];
+            $mahasiswa->email = $validated['email'];
+            $mahasiswa->jenis_mahasiswa = $validated['jenis_mahasiswa'];
+            $mahasiswa->no_telp = $validated['no_telp'] ?? null;
+            $mahasiswa->nim = $validated['nim'];
+
+            if (!empty($validated['password'])) {
+                $mahasiswa->password = bcrypt($validated['password']);
+            }
+
+            $mahasiswa->save();
 
             // Redirect with a success message
             return redirect()->route('pengurus.mahasiswa.index')->with('success', 'User updated successfully.');

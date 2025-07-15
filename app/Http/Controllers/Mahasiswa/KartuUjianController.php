@@ -288,6 +288,15 @@ class KartuUjianController extends Controller
     {
         $mahasiswa = Auth::guard('mahasiswa')->user();
 
+        if ($mahasiswa->jenis_mahasiswa === 'beasiswa') {
+            $pdf = Pdf::loadView('kartu-ujian-proposal', [
+                'mahasiswa' => $mahasiswa,
+                'tipe' => 'Proposal',
+            ])->setPaper([0, 0, 297.64, 419.53], 'landscape');
+
+            return $pdf->stream('kartu-proposal.pdf');
+        }
+
         $status = $mahasiswa->tanggungan_pembayaran()
             ->whereHas('detail_jenis_pembayaran.jenis_pembayaran', fn($q) => $q->where('nama_pembayaran', 'Skripsi'))
             ->first()?->status ?? 'belum_lunas';
@@ -311,19 +320,23 @@ class KartuUjianController extends Controller
         $statusPembayaran = 'belum_lunas';
         $semester = null;
 
-        if (in_array(strtolower($tipe), ['uts', 'uas']) && $semesterId) {
-            $semester = Semester::findOrFail($semesterId);
-
-            $statusPembayaran = $mahasiswa->tanggungan_pembayaran->first(function ($tp) use ($tipe, $semesterId) {
-                return strtolower($tp->detail_jenis_pembayaran->jenis_pembayaran->nama_pembayaran) === strtolower($tipe)
-                    && $tp->detail_jenis_pembayaran->semester_id == $semesterId;
-            })?->status ?? 'belum_lunas';
-        } elseif (in_array(strtolower($tipe), ['skripsi', 'proposal'])) {
-            $statusPembayaran = $mahasiswa->tanggungan_pembayaran->first(function ($tp) use ($tipe) {
-                return strtolower($tp->detail_jenis_pembayaran->jenis_pembayaran->nama_pembayaran) === strtolower($tipe);
-            })?->status ?? 'belum_lunas';
+        if (strtolower($mahasiswa->jenis_mahasiswa) === 'beasiswa') {
+            $statusPembayaran = 'lunas (beasiswa)';
         } else {
-            abort(404, 'Data validasi tidak ditemukan.');
+            if (in_array(strtolower($tipe), ['uts', 'uas']) && $semesterId) {
+                $semester = Semester::findOrFail($semesterId);
+
+                $statusPembayaran = $mahasiswa->tanggungan_pembayaran->first(function ($tp) use ($tipe, $semesterId) {
+                    return strtolower($tp->detail_jenis_pembayaran->jenis_pembayaran->nama_pembayaran) === strtolower($tipe)
+                        && $tp->detail_jenis_pembayaran->semester_id == $semesterId;
+                })?->status ?? 'belum_lunas';
+            } elseif (in_array(strtolower($tipe), ['skripsi', 'proposal'])) {
+                $statusPembayaran = $mahasiswa->tanggungan_pembayaran->first(function ($tp) use ($tipe) {
+                    return strtolower($tp->detail_jenis_pembayaran->jenis_pembayaran->nama_pembayaran) === strtolower($tipe);
+                })?->status ?? 'belum_lunas';
+            } else {
+                abort(404, 'Data validasi tidak ditemukan.');
+            }
         }
 
         return view('kartu-ujian-validasi', compact('mahasiswa', 'statusPembayaran', 'tipe', 'semester'));
