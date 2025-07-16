@@ -77,10 +77,17 @@ export const TransaksiColumn: ColumnDef<Transaksi>[] = [
     {
         accessorFn: row => row.detail_jenis_pembayaran.semester.semester + ' ' + row.detail_jenis_pembayaran.semester.tahun_ajaran,
         header: "Semester",
-        cell: ({ row }) => (
-            // console.log(row.original.jenis_pembayaran_id.nama_pembayaran),
-            <div className="capitalize">{row.original.detail_jenis_pembayaran.semester.semester} {row.original.detail_jenis_pembayaran.semester.tahun_ajaran}</div>
-        ),
+        cell: ({ row }) => {
+            const semester = row.original.detail_jenis_pembayaran.semester;
+            return (
+                <div className="capitalize">
+                    {semester
+                        ? `${semester.semester} ${semester.tahun_ajaran}`
+                        : <span className="text-red-500">Tidak ada semester</span>
+                    }
+                </div>
+            );
+        },
     },
     {
         accessorFn: row => row.detail_jenis_pembayaran.jenis_pembayaran.jumlah,
