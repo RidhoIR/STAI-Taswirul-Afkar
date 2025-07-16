@@ -16,6 +16,7 @@ import { CalendarIcon } from "lucide-react"
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -200,11 +201,12 @@ const Index = ({ transaksi, mahasiswa, tanggungan_pembayaran, }: TransaksiProps)
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
-                                                <DialogTitle>Pengajuan Anggaran</DialogTitle>
+                                                <DialogTitle>Tambah Pembayaran</DialogTitle>
+                                                <DialogDescription>masukkan data yang sesuai</DialogDescription>
                                             </DialogHeader>
                                             <form onSubmit={submit}>
                                                 <div className='mb-4'>
-                                                    <Label htmlFor="jenis_pembayaran_id">Jenis Pembayaran</Label>
+                                                    <Label htmlFor="jenis_pembayaran_id">Jenis Pembayaran<span className='text-red-600'>*</span></Label>
                                                     <Select
                                                         value={data.jenis_pembayaran_id}
                                                         onValueChange={(value) => setData('jenis_pembayaran_id', value)}
@@ -224,10 +226,11 @@ const Index = ({ transaksi, mahasiswa, tanggungan_pembayaran, }: TransaksiProps)
                                                 </div>
                                                 {!isOnce && (
                                                     <div className='mb-4'>
-                                                        <Label htmlFor="semester_id">Semester</Label>
+                                                        <Label htmlFor="semester_id">Semester<span className='text-red-600'>*</span></Label>
                                                         <Select
                                                             value={data.semester_id}
                                                             onValueChange={(value) => setData('semester_id', value)}
+                                                            required
                                                         >
                                                             <SelectTrigger className="w-full">
                                                                 <SelectValue placeholder="Pilih Semester" />
@@ -244,17 +247,18 @@ const Index = ({ transaksi, mahasiswa, tanggungan_pembayaran, }: TransaksiProps)
                                                     </div>
                                                 )}
                                                 <div className='mb-4'>
-                                                    <Label htmlFor='deskripsi'>Deskripsi</Label>
+                                                    <Label htmlFor='deskripsi'>Deskripsi<span className='text-red-600'>*</span></Label>
                                                     <Input
                                                         id='deskripsi'
                                                         type='text'
                                                         value={data.deskripsi}
                                                         onChange={(e) => setData('deskripsi', e.target.value)}
+                                                        required
                                                     />
                                                     {errors.deskripsi && <p className='text-red-500'>{errors.deskripsi}</p>}
                                                 </div>
                                                 <div className='mb-4'>
-                                                    <Label htmlFor='jumlah'>Jumlah</Label>
+                                                    <Label htmlFor='jumlah'>Jumlah<span className='text-red-600'>*</span></Label>
                                                     <Input
                                                         id='jumlah'
                                                         type='text'
@@ -268,7 +272,7 @@ const Index = ({ transaksi, mahasiswa, tanggungan_pembayaran, }: TransaksiProps)
                                                     <Button type="submit" disabled={processing}>
                                                         Ajukan
                                                     </Button>
-                                                    <Button variant="outline" onClick={() => setOpen(false)}>
+                                                    <Button type='button' variant="outline" onClick={() => setOpen(false)}>
                                                         Batal
                                                     </Button>
                                                 </DialogFooter>

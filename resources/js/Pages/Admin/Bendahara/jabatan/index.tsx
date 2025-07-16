@@ -90,9 +90,7 @@ const Index = ({ jabatans }: JabatanProps) => {
         setData('honor', value); // Simpan nilai asli (hanya angka)
     };
 
-    const daftarTugas = [
-        "Panitia", "Penguji", "Sekretaris", "Pembimbing"
-    ]
+
 
 
 
@@ -149,7 +147,7 @@ const Index = ({ jabatans }: JabatanProps) => {
                                                 <Button type="submit" disabled={processing}>
                                                     Ajukan
                                                 </Button>
-                                                <Button variant="outline" onClick={() => setOpen(false)}>
+                                                <Button type='button' variant="outline" onClick={() => setOpen(false)}>
                                                     Batal
                                                 </Button>
                                             </DialogFooter>

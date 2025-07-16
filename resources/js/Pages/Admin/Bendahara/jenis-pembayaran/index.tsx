@@ -104,11 +104,12 @@ const Index = ({ jenis_pembayaran }: JenisPembayaranProps) => {
                             <form onSubmit={submit}>
                                 <div className="space-y-4">
                                     <div>
-                                        <Label htmlFor="nama_pembayaran">Nama Pembayaran</Label>
+                                        <Label htmlFor="nama_pembayaran">Nama Pembayaran<span className='text-red-600'>*</span></Label>
                                         <Input
                                             id="nama_pembayaran"
                                             value={data.nama_pembayaran}
                                             onChange={e => setData('nama_pembayaran', e.target.value)}
+                                            required
                                         />
                                         {errors.nama_pembayaran && <p className="text-red-600">{errors.nama_pembayaran}</p>}
                                     </div>

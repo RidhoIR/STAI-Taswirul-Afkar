@@ -68,7 +68,7 @@ export const column: ColumnDef<HonorSkripsi>[] = [
     {
         header: "Total Honor",
         cell: ({ row }) => {
-            const total = row.original.tugas.reduce((acc, item) => acc + item.honor_total, 0);
+            const total = row.original.tugas.reduce((acc, item) => Number(acc) + Number(item.honor_total), 0);
             return <FormatRupiah value={total} />;
         },
     },

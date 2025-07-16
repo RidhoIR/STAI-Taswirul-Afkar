@@ -183,7 +183,7 @@ const Index = ({ honorariums }: HonorariumProps) => {
                                                 <Button type="submit" disabled={processing}>
                                                     Ajukan
                                                 </Button>
-                                                <Button variant="outline" onClick={() => setOpen(false)}>
+                                                <Button type='button' variant="outline" onClick={() => setCopyOpen(false)}>
                                                     Batal
                                                 </Button>
                                             </DialogFooter>
@@ -197,7 +197,7 @@ const Index = ({ honorariums }: HonorariumProps) => {
                                             <Download className='mr-2' />Tambah Data
                                         </Button>
                                     </DialogTrigger>
-                                    <DialogContent >
+                                    <DialogContent className='max-h-[90vh] overflow-y-auto'>
                                         <DialogHeader>
                                             <DialogTitle>Honorarium</DialogTitle>
                                         </DialogHeader>

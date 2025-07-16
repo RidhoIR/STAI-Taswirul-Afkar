@@ -125,10 +125,11 @@ const Index = ({ jenis_pembayaran_semester }: JenisPembayaranSemesterProps) => {
                                         <form onSubmit={submit}>
                                             <div className="space-y-4">
                                                 <div className='mb-4'>
-                                                    <Label htmlFor="jenis_pembayaran_id">Jenis Pembayaran</Label>
+                                                    <Label htmlFor="jenis_pembayaran_id">Jenis Pembayaran<span className='text-red-600'>*</span></Label>
                                                     <Select
                                                         value={data.jenis_pembayaran_id}
                                                         onValueChange={(value) => setData('jenis_pembayaran_id', value)}
+                                                        required
                                                     >
                                                         <SelectTrigger className="w-full">
                                                             <SelectValue placeholder="Pilih jenis pembayaran" />
@@ -145,10 +146,11 @@ const Index = ({ jenis_pembayaran_semester }: JenisPembayaranSemesterProps) => {
                                                 </div>
                                                 {!isOnce && (
                                                     <div className='mb-4'>
-                                                        <Label htmlFor="semester_id">Semester</Label>
+                                                        <Label htmlFor="semester_id">Semester<span className='text-red-600'>*</span></Label>
                                                         <Select
                                                             value={data.semester_id}
                                                             onValueChange={(value) => setData('semester_id', value)}
+                                                            required
                                                         >
                                                             <SelectTrigger className="w-full">
                                                                 <SelectValue placeholder="Pilih Semester" />
@@ -165,11 +167,12 @@ const Index = ({ jenis_pembayaran_semester }: JenisPembayaranSemesterProps) => {
                                                     </div>
                                                 )}
                                                 <div>
-                                                    <Label htmlFor="jumlah">Jumlah</Label>
+                                                    <Label htmlFor="jumlah">Jumlah<span className='text-red-600'>*</span></Label>
                                                     <Input
                                                         id="jumlah"
                                                         value={formatRupiah(data.jumlah)}
                                                         onChange={handleJumlahChange}
+                                                        required
                                                     />
                                                     {errors.jumlah && <p className="text-red-600">{errors.jumlah}</p>}
                                                 </div>
