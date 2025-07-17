@@ -42,7 +42,7 @@ const Index = ({ anggarans, filterYear, filterTridharma, availableYears, tridhar
             year: selectedYear,
             ...(selectedTridharma !== "all" && { tridharma_id: selectedTridharma }) //menggunakan spread operator
         }).toString();
-        window.location.href = route('pengurus.anggaran.index') + '?' + query;
+        window.location.href = route('admin.anggaran.index') + '?' + query;
     };
 
     const [date, setDate] = React.useState<Date>()

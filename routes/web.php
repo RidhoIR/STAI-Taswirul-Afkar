@@ -146,8 +146,6 @@ Route::middleware('auth:web', 'role:bendahara')->group(function () {
     Route::get('/dashboard/bendahara/chart-by-semester', [DashboardBendaharaController::class, 'chartBySemester']);
     Route::get('/dashboard/bendahara/bar-chart-data', [DashboardBendaharaController::class, 'barChartData']);
 
-
-
     Route::get('/admin/bendahara/mahasiswa', [KeuanganController::class, 'index'])->name('admin.bendahara.mahasiswa.index');
     Route::get('/pembayaran/riwayat/{mahasiswa_id}', [KeuanganController::class, 'detailMahasiswa'])->name('admin.bendahara.riwayat-pembayaran.detail-mahasiswa');
     Route::post('/admin/bendahara/mahasiswa/{mahasiswa_id}', [KeuanganController::class, 'tambahPembayaran'])->name('admin.bendahara.mahasiswa.tambah');
