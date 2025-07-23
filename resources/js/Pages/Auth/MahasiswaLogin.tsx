@@ -23,11 +23,11 @@ export default function MahasiswaLogin({ status, canResetPassword }: { status?: 
     };
 
     return (
-        <GuestLayout>
+        <GuestLayout title='Login Mahasiswa'>
             <Head title="Log in" />
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
-
+            
             <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="login" value="Email atau NIM" />

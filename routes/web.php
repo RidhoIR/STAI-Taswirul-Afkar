@@ -36,25 +36,16 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::redirect('/', '/login-mahasiswa'); 
+
 
 Route::get('/dashboard', function () {
     $user = Auth::user();
 
-    // Kalau yang login adalah Mahasiswa (guard mahasiswa)
-    // Cek kalau yang login adalah mahasiswa
     if (Auth::guard('mahasiswa')->check()) {
         return redirect()->route('mahasiswa.dashboard');
     }
 
-    // Kalau pakai guard web, cek rolenya
     if ($user) {
         if ($user->hasRole('admin')) {
             return redirect()->route('admin.dashboard');
