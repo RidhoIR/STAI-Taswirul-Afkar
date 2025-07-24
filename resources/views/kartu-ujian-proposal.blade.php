@@ -162,7 +162,7 @@
                         <div class="footer">
                             Mengetahui,<br>
                             <div class="signature"></div>
-                            <strong>Petugas Akademik</strong>
+                            <strong>Ketua STAI Taswirul Afkar</strong>
                         </div>
                     </td>
                     <td class="photo-cell">
