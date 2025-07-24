@@ -63,6 +63,9 @@ const Index = ({ mahasiswa, tanggungan_pembayaran, transaksi, totalTunggakan, se
     const { semesters } = usePage<PageProps>().props;
     console.log(flash);
 
+    const isBeasiswa = mahasiswa.jenis_mahasiswa === 'beasiswa';
+
+
     console.log(semester_aktif);
 
 
@@ -96,10 +99,10 @@ const Index = ({ mahasiswa, tanggungan_pembayaran, transaksi, totalTunggakan, se
                                     <p
                                         className={cn(
                                             "text-lg font-bold mt-2",
-                                            status_spp === "Lunas" ? "text-green-600" : "text-red-600"
+                                            (isBeasiswa || status_spp === "Lunas") ? "text-green-600" : "text-red-600"
                                         )}
                                     >
-                                        {status_spp}
+                                        {isBeasiswa ? "Lunas" : status_spp}
                                     </p>
                                 </div>
                             </div>
